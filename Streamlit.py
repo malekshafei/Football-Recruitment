@@ -59,11 +59,11 @@ custom_css = f"""
 }}
 html, body, [class*="css"] {{
     font-family: 'Montserrat', sans-serif;
-    background-color: #400179;
+    background-color: #C00C0D;
     color: #ffffff;
 }}
 .sidebar .sidebar-content {{
-    background-color: #400179;
+    background-color: #C00C0D;
 }}
 </style>
 """
@@ -652,11 +652,11 @@ if mode == 'Player Overview':
         if compare == 'Yes':
             data2 += data2[:1]
 
-        fig, ax = plt.subplots(figsize=(16, 9), subplot_kw=dict(polar=True, facecolor='#400179'))
-        fig.patch.set_facecolor('#400179')
-        fig.set_facecolor('#400179')
+        fig, ax = plt.subplots(figsize=(16, 9), subplot_kw=dict(polar=True, facecolor='#C00C0D'))
+        fig.patch.set_facecolor('#C00C0D')
+        fig.set_facecolor('#C00C0D')
 
-        ax.set_facecolor('#400179')
+        ax.set_facecolor('#C00C0D')
 
 
         ax.spines['polar'].set_visible(False)
@@ -686,7 +686,7 @@ if mode == 'Player Overview':
         ax.set_yticks([])
         ax.set_ylim(0, 100)
 
-        ax.plot(0, 0, 'ko', markersize=4, color='#400179')
+        ax.plot(0, 0, 'ko', markersize=4, color='#C00C0D')
         #fig.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
         #fig.subplots_adjust(left=0.25, right=0.75, top=0.75, bottom=0.25)
         fig.subplots_adjust(left=0.1, right=0.9, top=0.85, bottom=0.15)
@@ -712,7 +712,7 @@ if mode == 'Player Overview':
         image = Image.open(buf).convert("RGBA")
 
         # Create a new canvas with desired dimensions and background color
-        final_canvas = Image.new('RGBA', (1600, 900), (64, 1, 121, 255))
+        final_canvas = Image.new('RGBA', (1600, 900), (192, 12, 13, 255))
 
 
         resize_factor = 1.07
@@ -1009,10 +1009,10 @@ if  mode == 'Multi Player Dot Graph':
     colors = ['purple', 'red', 'green', 'orange', 'black']
     #fig, ax = plt.subplots(figsize=(10, 6))
     fig, ax = plt.subplots(figsize=(16, 9))
-    fig.patch.set_facecolor('#400179')
-    fig.set_facecolor('#400179')
+    fig.patch.set_facecolor('#C00C0D')
+    fig.set_facecolor('#C00C0D')
 
-    ax.set_facecolor('#400179')
+    ax.set_facecolor('#C00C0D')
     #fig, ax = plt.subplots(figsize=(16, 9))
 
 
@@ -1059,7 +1059,7 @@ if  mode == 'Multi Player Dot Graph':
     #ax.yaxis.set_tick_params(pad=60)
 
     for label in ax.get_yticklabels():
-        label.set_bbox(dict(facecolor='#400179', edgecolor='None', alpha=0.65, pad=5))
+        label.set_bbox(dict(facecolor='#C00C0D', edgecolor='None', alpha=0.65, pad=5))
 
     ax.set_yticks(np.arange(1, len(metrics) + 1))
     ax.set_yticklabels(metrics, size = 23, ha='right', color = 'white')#, fontname='Avenir')
@@ -1076,7 +1076,7 @@ if  mode == 'Multi Player Dot Graph':
     legend_labels = [f'{label}\n{int(df.loc[df["unique_label"] == label, "Minutes"].iloc[0])} Minutes' for label in labels]
 
     by_label = dict(zip(labels, handles))
-    legend = ax.legend(by_label.values(), legend_labels, facecolor = '#400179', loc='upper center', bbox_to_anchor=(0.5, -0.2), fontsize=16, ncol=len(players))
+    legend = ax.legend(by_label.values(), legend_labels, facecolor = '#C00C0D', loc='upper center', bbox_to_anchor=(0.5, -0.2), fontsize=16, ncol=len(players))
      
     for text in legend.get_texts():
         text.set_color('white')
