@@ -674,8 +674,8 @@ if mode == 'Player Overview':
             ax.plot(angles, data1, color='blue', linewidth=2.5, linestyle='-', marker='o', markersize=3)
             ax.fill(angles, data1, color='blue', alpha=0.7)
 
-            ax.plot(angles, data2, color='black', linewidth=2.5, linestyle='-', marker='o', markersize=3)
-            ax.fill(angles, data2, color='black', alpha=0.55)
+            ax.plot(angles, data2, color='yellow', linewidth=2.5, linestyle='-', marker='o', markersize=3)
+            ax.fill(angles, data2, color='yellow', alpha=0.55)
 
 
 
