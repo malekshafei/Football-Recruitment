@@ -671,11 +671,11 @@ if mode == 'Player Overview':
             ax.fill(angles, data1, color='green', alpha=0.95)
 
         if compare == 'Yes':
-            ax.plot(angles, data1, color='green', linewidth=2.5, linestyle='-', marker='o', markersize=3)
-            ax.fill(angles, data1, color='green', alpha=0.7)
+            ax.plot(angles, data1, color='blue', linewidth=2.5, linestyle='-', marker='o', markersize=3)
+            ax.fill(angles, data1, color='blue', alpha=0.7)
 
-            ax.plot(angles, data2, color='red', linewidth=2.5, linestyle='-', marker='o', markersize=3)
-            ax.fill(angles, data2, color='red', alpha=0.55)
+            ax.plot(angles, data2, color='black', linewidth=2.5, linestyle='-', marker='o', markersize=3)
+            ax.fill(angles, data2, color='black', alpha=0.55)
 
 
 
@@ -773,19 +773,19 @@ if mode == 'Player Overview':
             mins2 = int(df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Minutes'])
             detailed_pos2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Detailed Position']
 
-            plt.text(40,65,f"{name1}",ha = 'left', fontsize=35, color = 'green', fontweight = 'bold')
+            plt.text(40,65,f"{name1}",ha = 'left', fontsize=35, color = 'blue', fontweight = 'bold')
             #plt.text(40,110,f"{club} - {season1} {league1}",ha = 'left', fontsize=30, color = 'green', fontname='Avenir')
             #plt.text(40,150,f"{mins} Minutes - {detailed_pos}",ha = 'left', fontsize=30, color = 'green', fontname='Avenir')
-            plt.text(40,110,f"{club}",ha = 'left', fontsize=30, color = 'green')#, fontname='Avenir')
-            plt.text(40,150,f"{season1} {league1}",ha = 'left', fontsize=30, color = 'green')#, fontname='Avenir')
-            plt.text(40,190,f"{mins} Minutes - {detailed_pos}",ha = 'left', fontsize=30, color = 'green')#, fontname='Avenir')
+            plt.text(40,110,f"{club}",ha = 'left', fontsize=30, color = 'blue')#, fontname='Avenir')
+            plt.text(40,150,f"{season1} {league1}",ha = 'left', fontsize=30, color = 'blue')#, fontname='Avenir')
+            plt.text(40,190,f"{mins} Minutes - {detailed_pos}",ha = 'left', fontsize=30, color = 'blue')#, fontname='Avenir')
         
-            plt.text(1560,65,f"{name2}",ha = 'right', fontsize=35, color = 'red', fontweight = 'bold')
+            plt.text(1560,65,f"{name2}",ha = 'right', fontsize=35, color = 'black', fontweight = 'bold')
             #plt.text(1560,110,f"{club2} - {season2} {league2}",ha = 'right', fontsize=30, color = 'red', fontname='Avenir')
             #plt.text(1560,150,f"{mins2} Minutes - {detailed_pos2}",ha = 'right', fontsize=30, color = 'red', fontname='Avenir')
-            plt.text(1560,110,f"{club2}",ha = 'right', fontsize=30, color = 'red')#, fontname='Avenir')
-            plt.text(1560,150,f"{season2} {league2}",ha = 'right', fontsize=30, color = 'red')#, fontname='Avenir')
-            plt.text(1560,190,f"{mins2} Minutes - {detailed_pos2}",ha = 'right', fontsize=30, color = 'red')#, fontname='Avenir')
+            plt.text(1560,110,f"{club2}",ha = 'right', fontsize=30, color = 'black')#, fontname='Avenir')
+            plt.text(1560,150,f"{season2} {league2}",ha = 'right', fontsize=30, color = 'black')#, fontname='Avenir')
+            plt.text(1560,190,f"{mins2} Minutes - {detailed_pos2}",ha = 'right', fontsize=30, color = 'black')#, fontname='Avenir')
             plt.text(30,880,f"Data compared to {position_group1} in player's league",ha = 'left', fontsize=15, color = 'white')#, fontname='Avenir')
 
             if league1 in ws_leagues and league2 in ws_leagues: plt.text(1570,880,f"{unavail_metrics}\ndata unavailable",ha = 'right', fontsize=16, color = 'white')#, fontname='Avenir') 
