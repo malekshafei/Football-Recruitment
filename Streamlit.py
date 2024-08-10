@@ -42,6 +42,8 @@ st.set_page_config(
     initial_sidebar_state="expanded"   
     
 )
+df.fillna(0, inplace=True)
+
 regular_font_path = '/Users/malekshafei/Downloads/Montserrat/static/Montserrat-Regular.ttf'
 bold_font_path = '/Users/malekshafei/Downloads/Montserrat/static/Montserrat-Bold.ttf'
 
@@ -213,7 +215,7 @@ if mode == 'Player Overview':
 
 
             data1 = [Carrying, Heading, BallRetention, ProgressivePassing, DefAccuracy, DefEngage, DefHigh]
-            if league1 in ws_leagues: data1 = [0, Heading,  BallRetention, ProgressivePassing, DefAccuracy, DefEngage, 0]
+            #if league1 in ws_leagues: data1 = [0, Heading,  BallRetention, ProgressivePassing, DefAccuracy, DefEngage, 0]
             metrics = ['SPt', 'Heading','Ball Retention', 'Progressive Passing', 'Tackle Accuracy', 'Defensive Output', 'Defending High']
             metric_names = ['Set Piece\nThreat', 'Heading', 'Ball Retention', 'Progressive\nPassing', 'Tackle\nAccuracy', 'Defensive Output', 'Defending\nHigh']
             unavail_metrics = "Set Piece and Defending High"
@@ -228,7 +230,7 @@ if mode == 'Player Overview':
 
 
                 data2 = [Carrying2, Heading2, BallRetention2, ProgressivePassing2, DefAccuracy2, DefEngage2, DefHigh2]
-                if league2 in ws_leagues: data2 = [0, Heading2, BallRetention2, ProgressivePassing2, DefAccuracy2, DefEngage2, 0]
+                #if league2 in ws_leagues: data2 = [0, Heading2, BallRetention2, ProgressivePassing2, DefAccuracy2, DefEngage2, 0]
 
 
 
@@ -244,7 +246,7 @@ if mode == 'Player Overview':
 
 
             data1 = [TacklePct, Tackles, Interceptions, Blocks, Headers, AerialPct, DefThirdTacklePct]
-            if league1 in ws_leagues: data1 = [TacklePct, Tackles, Interceptions, Blocks, Headers, 0, 0]
+            #if league1 in ws_leagues: data1 = [TacklePct, Tackles, Interceptions, Blocks, Headers, 0, 0]
             metrics = ['pctTackle %', 'pctTackles Won', 'pctInterceptions', 'pctAerial Wins','pctAerial %', '% of Def Actions in Att. 1/3', 'Tackle Outcome']
             metric_names = ['Tackle %', 'Tackles', 'Interceptions', 'Headers\nWon','Aerial %', '% of Def. Actions in Att. 1/3', 'Tackle Outcome']
             unavail_metrics = "Tackle Outcome and Def. 1/3"
@@ -260,7 +262,7 @@ if mode == 'Player Overview':
 
 
                 data2 = [TacklePct2, Tackles2, Interceptions2, Blocks2, Headers2, AerialPct2, DefThirdTacklePct2]
-                if league2 in ws_leagues: data2 = [TacklePct2, Tackles2, Interceptions2, Blocks2, Headers2, 0, 0]
+                #if league2 in ws_leagues: data2 = [TacklePct2, Tackles2, Interceptions2, Blocks2, Headers2, 0, 0]
 
 
         if position_group1 == 'CBs' and mode1 == 'In Possession':
@@ -306,7 +308,7 @@ if mode == 'Player Overview':
             #data1 = [Creating, Carrying, Technical, BoxThreat, DefAccuracy, DefEngage, DefendingHigh, Heading]
             
             data1 = [ReceivingForward, Technical, Creating, DefAccuracy, DefEngage, DefendingHigh,Heading]
-            if league1 in ws_leagues: data1 = [ReceivingForward, Technical, Creating, DefAccuracy, DefEngage, 0,Heading]
+            #if league1 in ws_leagues: data1 = [ReceivingForward, Technical, Creating, DefAccuracy, DefEngage, 0,Heading]
             metrics = ['Receiving', 'Ball Retention', 'Chance Creation', 'Tackle Accuracy', 'Defenisve Output', 'Defending High', 'Heading']
             metric_names = ['Receiving', 'Ball Retention', 'Chance Creation', 'Tackle\nAccuracy', 'Defenisve\nOutput', 'Defending High', 'Heading']
             unavail_metrics = "Defending High"
@@ -323,7 +325,7 @@ if mode == 'Player Overview':
                 #data1 = [Creating, Carrying, Technical, BoxThreat, DefAccuracy, DefEngage, DefendingHigh, Heading]
                 
                 data2 = [ReceivingForward2, Technical2, Creating2, DefAccuracy2, DefEngage2, DefendingHigh2,Heading2]
-                if league2 in ws_leagues: data2 = [ReceivingForward2, Technical2, Creating2, DefAccuracy2, DefEngage2, 0,Heading2]
+                #if league2 in ws_leagues: data2 = [ReceivingForward2, Technical2, Creating2, DefAccuracy2, DefEngage2, 0,Heading2]
 
         if position_group1 == 'WBs' and mode1 == 'Defending':
                 
@@ -336,7 +338,7 @@ if mode == 'Player Overview':
             AttThirdPressures = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctAerial Wins']
             
             data1 = [TacklesWon, TacklePct, DefThirdTackles, DefThirdTacklePct, Intercepts, Pressures,AttThirdPressures]
-            if league1 in ws_leagues: data1 = [TacklesWon, TacklePct, DefThirdTackles, 0, 0, 0,AttThirdPressures]
+            #if league1 in ws_leagues: data1 = [TacklesWon, TacklePct, DefThirdTackles, 0, 0, 0,AttThirdPressures]
             metrics = ['Tackles Won', 'Tackle %', 'Def. Third Tackles Won', 'Def. Third Tackle %', 'Interceptions', 'Pressures','Att. Third Pressures']
             metric_names = ['Tackles Won', 'Tackle %', 'Interceptions', '% of Def Actions\nin Att. 1/3', '% of Team Tackles', 'Tackle Outcome','Headers Won']
             unavail_metrics = "Def. 1/3, % of Team Tackles, & Tackle Outcome"
@@ -351,7 +353,7 @@ if mode == 'Player Overview':
                 AttThirdPressures2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctAerial Wins']
                 
                 data2 = [TacklesWon2, TacklePct2, DefThirdTackles2, DefThirdTacklePct2, Intercepts2, Pressures2,AttThirdPressures2]
-                if league2 in ws_leagues: data2 = [TacklesWon2, TacklePct2, DefThirdTackles2, 0, 0, 0,AttThirdPressures2]
+                #if league2 in ws_leagues: data2 = [TacklesWon2, TacklePct2, DefThirdTackles2, 0, 0, 0,AttThirdPressures2]
 
         if position_group1 == 'WBs' and mode1 == 'Attacking':
                 
@@ -364,7 +366,7 @@ if mode == 'Player Overview':
             TakeOns = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctTake Ons']
             
             data1 = [KeyPasses, Crosses, PassesIntoBox, xA, Assists, FinalThirdTouches,TakeOns]
-            if league1 in ws_leagues: data1 = [KeyPasses, Crosses, PassesIntoBox, xA, Assists, 0,TakeOns]
+            #if league1 in ws_leagues: data1 = [KeyPasses, Crosses, PassesIntoBox, xA, Assists, 0,TakeOns]
             metrics = ['pctKey Passes', 'pctCrosses Completed into Box', 'pctPasses into Box', 'pctxA', 'pctAssists', 'pctFinal Third Receptions', 'pctTake Ons']
             metric_names = ['Key Passes', 'Completed Crosses', 'Passes into Box', 'xA', 'Assists', 'Final Third Touches', 'Take Ons Completed']
             unavail_metrics = "Final Third Touches"
@@ -379,7 +381,7 @@ if mode == 'Player Overview':
                 TakeOns2 = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctTake Ons']
                 
                 data2 = [KeyPasses2, Crosses2, PassesIntoBox2, xA2, Assists2, FinalThirdTouches2,TakeOns2]
-                if league2 in ws_leagues: data2 = [KeyPasses, Crosses, PassesIntoBox, xA, Assists, 0,TakeOns]
+                #if league2 in ws_leagues: data2 = [KeyPasses, Crosses, PassesIntoBox, xA, Assists, 0,TakeOns]
 
         
 
@@ -401,7 +403,7 @@ if mode == 'Player Overview':
             Heading = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Heading'])
 
             data1 = [BoxThreat, Creating, Technical, DefAccuracy, DefEngage, DefendingHigh, Heading]
-            if league1 in ws_leagues: data1 = [BoxThreat, Creating, Technical, DefAccuracy, DefEngage, 0, Heading]
+            #if league1 in ws_leagues: data1 = [BoxThreat, Creating, Technical, DefAccuracy, DefEngage, 0, Heading]
             metrics = ['Receiving', 'Chance Creation', 'Ball Retention', 'Tackle Accuracy', 'Defensive Output', 'Pressing','Heading']
             metric_names = ['Receiving', 'Chance Creation', 'Ball Retention', 'Tackle\nAccuracy', 'Defensive Output', 'Defending High','Heading']
             unavail_metrics = "Defending High"
@@ -418,7 +420,7 @@ if mode == 'Player Overview':
                 Heading2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Heading'])
 
                 data2 = [BoxThreat2, Creating2, Technical2, DefAccuracy2, DefEngage2, DefendingHigh2, Heading2]
-                if league2 in ws_leagues: data2 = [BoxThreat2, Creating2, Technical2, DefAccuracy2, DefEngage2, 0, Heading2]
+                #if league2 in ws_leagues: data2 = [BoxThreat2, Creating2, Technical2, DefAccuracy2, DefEngage2, 0, Heading2]
 
         if position_group1 == 'CMs' and mode1 == 'Defending':
                 
@@ -431,7 +433,7 @@ if mode == 'Player Overview':
             AerialWins = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctAerial Wins'])
 
             data1 = [TacklesWon, TacklePct, Interceptions, Pressures, CounterPressures, AttThirdPressures,AerialWins]
-            if league1 in ws_leagues: data1 = [TacklesWon, TacklePct, Interceptions, 0, 0, 0 ,AerialWins]
+            #if league1 in ws_leagues: data1 = [TacklesWon, TacklePct, Interceptions, 0, 0, 0 ,AerialWins]
             metrics = ['Tackles Won', 'Tackle %', 'Interceptions', 'Pressures','Counterpressures','Att. Third Pressures', 'Headers Won']
             metric_names = ['Tackles Won', 'Tackle %', 'Interceptions', '% of Def Actions\nin Att. 1/3','% of Team Tackles','Tackle Outcome', 'Headers Won']
             unavail_metrics = "Def. 1/3, % of Team Tackles, & Tackle Outcome"
@@ -446,7 +448,7 @@ if mode == 'Player Overview':
                 AerialWins2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctAerial Wins'])
 
                 data2 = [TacklesWon2, TacklePct2, Interceptions2, Pressures2, CounterPressures2, AttThirdPressures2,AerialWins2]
-                if league2 in ws_leagues: data2 = [TacklesWon2, TacklePct2, Interceptions2, 0, 0, 0,AerialWins2]
+                #if league2 in ws_leagues: data2 = [TacklesWon2, TacklePct2, Interceptions2, 0, 0, 0,AerialWins2]
 
         if position_group1 == 'CMs' and mode1 == 'Buildup & Chance Creation':
                 
@@ -486,7 +488,7 @@ if mode == 'Player Overview':
             AerialWins = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctpAdj Received Passes in Six Yard Box'])
 
             data1 = [TacklesWon, TacklePct, Interceptions, Pressures, CounterPressures, AttThirdPressures,AerialWins]
-            if league1 in ws_leagues: data1 = [0, TacklePct, Interceptions, Pressures, CounterPressures, AttThirdPressures,0]
+            #if league1 in ws_leagues: data1 = [0, TacklePct, Interceptions, Pressures, CounterPressures, AttThirdPressures,0]
             metrics = ['Final Third Touches', 'Box Touches', 'Goals', 'Shots', 'xG', 'xG/Shot', 'Big Chances']
             metric_names = ['Final Third\nTouches', 'Box Touches', 'Goals', 'Shots', 'xG', 'xG/Shot', 'Touches in\n6-yd Box']
             unavail_metrics = "Final Third and 6-yd Box Touches"
@@ -502,7 +504,7 @@ if mode == 'Player Overview':
                 AerialWins2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctpAdj Received Passes in Six Yard Box'])
 
                 data2 = [TacklesWon2, TacklePct2, Interceptions2, Pressures2, CounterPressures2, AttThirdPressures2,AerialWins2]
-                if league2 in ws_leagues: data2 = [0, TacklePct2, Interceptions2, Pressures2, CounterPressures2, AttThirdPressures2,0]
+                #if league2 in ws_leagues: data2 = [0, TacklePct2, Interceptions2, Pressures2, CounterPressures2, AttThirdPressures2,0]
 
 
                     
@@ -570,7 +572,7 @@ if mode == 'Player Overview':
             AerialWins = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctpAdj Received Through Passes'])
 
             data1 = [TacklesWon, TacklePct, Interceptions, Pressures, CounterPressures, AttThirdPressures,AerialWins]
-            if league1 in ws_leagues: data1 = [TacklesWon, TacklePct, Interceptions, Pressures, CounterPressures, 0,0]
+            #if league1 in ws_leagues: data1 = [TacklesWon, TacklePct, Interceptions, Pressures, CounterPressures, 0,0]
             metrics = ['Touches in Box', 'Goals', 'Shots', 'xG', 'xG/Shot', 'Big Chances', 'Big Chance Conversion']
             metric_names = ['Touches in Box', 'Goals', 'Shots', 'xG', 'xG/Shot', 'Touches in 6-yd Box', 'Through Balls\nReceived']
             unavail_metrics = "6-yd Box Touches and Through Ball"
@@ -586,7 +588,7 @@ if mode == 'Player Overview':
 
                 
                 data2 = [TacklesWon2, TacklePct2, Interceptions2, Pressures2, CounterPressures2, AttThirdPressures2,AerialWins2]
-                if league2 in ws_leagues: data2 = [TacklesWon2, TacklePct2, Interceptions2, Pressures2, CounterPressures2, 0,0]
+                #if league2 in ws_leagues: data2 = [TacklesWon2, TacklePct2, Interceptions2, Pressures2, CounterPressures2, 0,0]
 
 
         if (position_group1 == 'Ws' or position_group1 == 'AMs' or position_group1 == 'STs') and mode1 == "Out of Possession":
@@ -615,7 +617,7 @@ if mode == 'Player Overview':
 
 
                 data2 = [TacklesWon2, TacklePct2, Interceptions2, Pressures2, CounterPressures2, AttThirdPressures2,AerialWins2]
-                if league2 in ws_leagues: data2 = [TacklesWon2, TacklePct2, Interceptions2, Pressures2, CounterPressures2, 0,0]
+                #if league2 in ws_leagues: data2 = [TacklesWon2, TacklePct2, Interceptions2, Pressures2, CounterPressures2, 0,0]
 
 
 
