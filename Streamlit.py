@@ -59,11 +59,11 @@ custom_css = f"""
 }}
 html, body, [class*="css"] {{
     font-family: 'Montserrat', sans-serif;
-    background-color: #400179;
+    background-color: #C00C0D;
     color: #ffffff;
 }}
 .sidebar .sidebar-content {{
-    background-color: #400179;
+    background-color: #C00C0D;
 }}
 </style>
 """
@@ -163,12 +163,12 @@ if mode == 'Player Overview':
             with col3: season2 = st.selectbox("Select other season", options=sorted(df[(df['Competition'] == league2) & (df['Position Group'] == position_group1) & (df['Player'] == name2)]['Season'].unique(), reverse=True))
 
         ws_leagues = ['Albania', 'Algeria', 'Andorra', 'Argentina2','Argentina3', 'Armenia', 'Austria2', 
-                      'Azerbaijan', 'Belgium2', 'Bolivia','Bosnia','Brazil3', 'Bulgaria', 'Canada', 'Chile',
-                       'Colombia', 'Costa Rica', 'Cyprus', 'Dominican Republic', 'Ecuador', 'El Salvador',
+                      'Azerbaijan', 'Belgium2', 'Bolivia','Bosnia','Brazil3', 'Bulgaria', 'Canada', 'Chile', 'Croatia',
+                       'Costa Rica', 'Cyprus', 'Dominican Republic', 'Ecuador', 'El Salvador',
                         'England5', 'Estonia', 'Finland', 'France3', 'Georgia', 'Germany4', 'Ghana', 'Guatemala',
                          'Honduras', 'Hungary', 'Hungary2', 'Iceland', 'Italy3', 'Jamaica', 'Japan2', 'Korea2', 
-                         'Kosovo', 'Latvia', 'Lithuania', 'Mexico', 'Mexico2', 'Moldova', 'Montegro', 'Morocco',
-                         'Nicaragua', 'Macedonia', 'Norway2', 'Panama', 'Paraguay', 'Peru', 'Poland', 'Portugal2',
+                         'Kosovo', 'Latvia', 'Lithuania', 'Mexico2', 'Moldova', 'Montegro', 'Morocco',
+                         'Nicaragua', 'Macedonia', 'Norway2', 'Panama', 'Paraguay', 'Peru', 'Portugal2',
                          'Portugal3', 'Ireland', 'Romania', 'Scotland2', 'Serbia', 'Serbia2', 'Slovakia', 'Slovenia',
                          'Spain3', 'Sweden2', 'Switzerland2', 'Tunisia', 'Turkey2', 'Ukraine', 'Ukraine2', 
                          'USA2', 'USA3', 'USA4', 'Uruguay', 'Uzbekistan', 'Venezuela'
@@ -652,11 +652,11 @@ if mode == 'Player Overview':
         if compare == 'Yes':
             data2 += data2[:1]
 
-        fig, ax = plt.subplots(figsize=(16, 9), subplot_kw=dict(polar=True, facecolor='#400179'))
-        fig.patch.set_facecolor('#400179')
-        fig.set_facecolor('#400179')
+        fig, ax = plt.subplots(figsize=(16, 9), subplot_kw=dict(polar=True, facecolor='#C00C0D'))
+        fig.patch.set_facecolor('#C00C0D')
+        fig.set_facecolor('#C00C0D')
 
-        ax.set_facecolor('#400179')
+        ax.set_facecolor('#C00C0D')
 
 
         ax.spines['polar'].set_visible(False)
@@ -671,11 +671,11 @@ if mode == 'Player Overview':
             ax.fill(angles, data1, color='green', alpha=0.95)
 
         if compare == 'Yes':
-            ax.plot(angles, data1, color='green', linewidth=2.5, linestyle='-', marker='o', markersize=3)
-            ax.fill(angles, data1, color='green', alpha=0.7)
+            ax.plot(angles, data1, color='blue', linewidth=2.5, linestyle='-', marker='o', markersize=3)
+            ax.fill(angles, data1, color='blue', alpha=0.7)
 
-            ax.plot(angles, data2, color='red', linewidth=2.5, linestyle='-', marker='o', markersize=3)
-            ax.fill(angles, data2, color='red', alpha=0.55)
+            ax.plot(angles, data2, color='yellow', linewidth=2.5, linestyle='-', marker='o', markersize=3)
+            ax.fill(angles, data2, color='yellow', alpha=0.55)
 
 
 
@@ -686,7 +686,7 @@ if mode == 'Player Overview':
         ax.set_yticks([])
         ax.set_ylim(0, 100)
 
-        ax.plot(0, 0, 'ko', markersize=4, color='#400179')
+        ax.plot(0, 0, 'ko', markersize=4, color='#C00C0D')
         #fig.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
         #fig.subplots_adjust(left=0.25, right=0.75, top=0.75, bottom=0.25)
         fig.subplots_adjust(left=0.1, right=0.9, top=0.85, bottom=0.15)
@@ -712,7 +712,7 @@ if mode == 'Player Overview':
         image = Image.open(buf).convert("RGBA")
 
         # Create a new canvas with desired dimensions and background color
-        final_canvas = Image.new('RGBA', (1600, 900), (64, 1, 121, 255))
+        final_canvas = Image.new('RGBA', (1600, 900), (192, 12, 13, 255))
 
 
         resize_factor = 1.07
@@ -773,19 +773,19 @@ if mode == 'Player Overview':
             mins2 = int(df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Minutes'])
             detailed_pos2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Detailed Position']
 
-            plt.text(40,65,f"{name1}",ha = 'left', fontsize=35, color = 'green', fontweight = 'bold')
+            plt.text(40,65,f"{name1}",ha = 'left', fontsize=35, color = 'blue', fontweight = 'bold')
             #plt.text(40,110,f"{club} - {season1} {league1}",ha = 'left', fontsize=30, color = 'green', fontname='Avenir')
             #plt.text(40,150,f"{mins} Minutes - {detailed_pos}",ha = 'left', fontsize=30, color = 'green', fontname='Avenir')
-            plt.text(40,110,f"{club}",ha = 'left', fontsize=30, color = 'green')#, fontname='Avenir')
-            plt.text(40,150,f"{season1} {league1}",ha = 'left', fontsize=30, color = 'green')#, fontname='Avenir')
-            plt.text(40,190,f"{mins} Minutes - {detailed_pos}",ha = 'left', fontsize=30, color = 'green')#, fontname='Avenir')
+            plt.text(40,110,f"{club}",ha = 'left', fontsize=30, color = 'blue')#, fontname='Avenir')
+            plt.text(40,150,f"{season1} {league1}",ha = 'left', fontsize=30, color = 'blue')#, fontname='Avenir')
+            plt.text(40,190,f"{mins} Mins - {detailed_pos}",ha = 'left', fontsize=30, color = 'blue')#, fontname='Avenir')
         
-            plt.text(1560,65,f"{name2}",ha = 'right', fontsize=35, color = 'red', fontweight = 'bold')
+            plt.text(1560,65,f"{name2}",ha = 'right', fontsize=35, color = 'yellow', fontweight = 'bold')
             #plt.text(1560,110,f"{club2} - {season2} {league2}",ha = 'right', fontsize=30, color = 'red', fontname='Avenir')
             #plt.text(1560,150,f"{mins2} Minutes - {detailed_pos2}",ha = 'right', fontsize=30, color = 'red', fontname='Avenir')
-            plt.text(1560,110,f"{club2}",ha = 'right', fontsize=30, color = 'red')#, fontname='Avenir')
-            plt.text(1560,150,f"{season2} {league2}",ha = 'right', fontsize=30, color = 'red')#, fontname='Avenir')
-            plt.text(1560,190,f"{mins2} Minutes - {detailed_pos2}",ha = 'right', fontsize=30, color = 'red')#, fontname='Avenir')
+            plt.text(1560,110,f"{club2}",ha = 'right', fontsize=30, color = 'yellow')#, fontname='Avenir')
+            plt.text(1560,150,f"{season2} {league2}",ha = 'right', fontsize=30, color = 'yellow')#, fontname='Avenir')
+            plt.text(1560,190,f"{mins2} Mins - {detailed_pos2}",ha = 'right', fontsize=30, color = 'yellow')#, fontname='Avenir')
             plt.text(30,880,f"Data compared to {position_group1} in player's league",ha = 'left', fontsize=15, color = 'white')#, fontname='Avenir')
 
             if league1 in ws_leagues and league2 in ws_leagues: plt.text(1570,880,f"{unavail_metrics}\ndata unavailable",ha = 'right', fontsize=16, color = 'white')#, fontname='Avenir') 
@@ -1009,10 +1009,10 @@ if  mode == 'Multi Player Dot Graph':
     colors = ['purple', 'red', 'green', 'orange', 'black']
     #fig, ax = plt.subplots(figsize=(10, 6))
     fig, ax = plt.subplots(figsize=(16, 9))
-    fig.patch.set_facecolor('#400179')
-    fig.set_facecolor('#400179')
+    fig.patch.set_facecolor('#C00C0D')
+    fig.set_facecolor('#C00C0D')
 
-    ax.set_facecolor('#400179')
+    ax.set_facecolor('#C00C0D')
     #fig, ax = plt.subplots(figsize=(16, 9))
 
 
@@ -1059,7 +1059,7 @@ if  mode == 'Multi Player Dot Graph':
     #ax.yaxis.set_tick_params(pad=60)
 
     for label in ax.get_yticklabels():
-        label.set_bbox(dict(facecolor='#400179', edgecolor='None', alpha=0.65, pad=5))
+        label.set_bbox(dict(facecolor='#C00C0D', edgecolor='None', alpha=0.65, pad=5))
 
     ax.set_yticks(np.arange(1, len(metrics) + 1))
     ax.set_yticklabels(metrics, size = 23, ha='right', color = 'white')#, fontname='Avenir')
@@ -1076,7 +1076,7 @@ if  mode == 'Multi Player Dot Graph':
     legend_labels = [f'{label}\n{int(df.loc[df["unique_label"] == label, "Minutes"].iloc[0])} Minutes' for label in labels]
 
     by_label = dict(zip(labels, handles))
-    legend = ax.legend(by_label.values(), legend_labels, facecolor = '#400179', loc='upper center', bbox_to_anchor=(0.5, -0.2), fontsize=16, ncol=len(players))
+    legend = ax.legend(by_label.values(), legend_labels, facecolor = '#C00C0D', loc='upper center', bbox_to_anchor=(0.5, -0.2), fontsize=16, ncol=len(players))
      
     for text in legend.get_texts():
         text.set_color('white')
