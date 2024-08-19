@@ -1029,7 +1029,7 @@ if  mode == 'Multi Player Dot Graph':
     #players = [player1, player2, player3, player4, player5 ]
     #players = df['Player']
     players = df['unique_label']
-    colors = ['purple', 'red', 'green', 'orange', 'black']
+    colors = ['purple', 'red', 'green', 'orange', 'black', 'yellow']
     #fig, ax = plt.subplots(figsize=(10, 6))
     fig, ax = plt.subplots(figsize=(16, 9))
     fig.patch.set_facecolor('#C00C0D')
