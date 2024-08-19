@@ -966,6 +966,27 @@ if  mode == 'Multi Player Dot Graph':
             'Select Season #4',
             sorted(df[(df['Competition'] == league4) & (df['Position Group'] == position_group1) & (df['Player'] == name4)]['Season'].unique(), reverse=True)
         )
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        league5 = st.selectbox(
+            'Select League #5',
+            sorted_competitions
+        )
+
+    # Place the second selectbox in the second column
+    with col2:
+        name5 = st.selectbox(
+            'Select Player #5',
+            df[(df['Position Group'] == position_group1) & (df['Competition'] == league5)]['Player'].unique()
+        )
+
+    # Place the third selectbox in the third column
+    with col3:
+        season5 = st.selectbox(
+            'Select Season #5',
+            sorted(df[(df['Competition'] == league5) & (df['Position Group'] == position_group1) & (df['Player'] == name5)]['Season'].unique(), reverse=True)
+        )
 
     # data = {
     #     'Player': ['Turner', 'Silva', 'Jheniffer', 'Tanaka', 'Ludmila'],
@@ -987,8 +1008,8 @@ if  mode == 'Multi Player Dot Graph':
     df = df[((df['Competition'] == league1) & (df['Player'] == name1) & (df['Season'] == season1)) | 
             ((df['Competition'] == league2) & (df['Player'] == name2) & (df['Season'] == season2)) | 
             ((df['Competition'] == league3) & (df['Player'] == name3) & (df['Season'] == season3)) | 
-            ((df['Competition'] == league4) & (df['Player'] == name4) & (df['Season'] == season4))]# |
-            #((df['Competition'] == league5) & (df['Player'] == name5) & (df['Season'] == season5))]
+            ((df['Competition'] == league4) & (df['Player'] == name4) & (df['Season'] == season4)) |
+            ((df['Competition'] == league5) & (df['Player'] == name5) & (df['Season'] == season5))]
 
     df['unique_label'] = df.apply(lambda row: f"{row['Player']}\n{row['Competition']} - {row['Season']}", axis=1)
 
