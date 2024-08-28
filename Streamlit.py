@@ -519,6 +519,13 @@ if mode == 'Player Overview':
             Progression = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Progression'])
             Heading = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Heading'])
 
+            if league1 in ws_leagues: 
+                pc1 = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctProgressive Carries'])
+                pc2 = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctPasses into Box'])
+                pc3 = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctProgressive Passes'])
+                Progression = (0.4 * pc1) + (0.2 * pc2) + (0.4 * pc3)
+
+
             data1 = [Creating, Dribbling, Poaching, Finishing, Heading, DefOutput, Progression]
             metrics = ['Chance Creation', 'Dribbling Threat', 'Poaching', 'Finishing', 'Heading','Defensive Output','Progression']
             metric_names = ['Chance\nCreation', 'Dribbling Threat', 'Poaching', 'Finishing', 'Heading', 'Defensive Output', 'Progression']
@@ -533,7 +540,12 @@ if mode == 'Player Overview':
                 DefOutput2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Defensive Output'])
                 Progression2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Progression'])
                 Heading2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Heading'])
-
+                
+                if league2 in ws_leagues: 
+                    pc12 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctProgressive Carries'])
+                    pc22 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctPasses into Box'])
+                    pc32 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctProgressive Passes'])
+                    Progression2 = (0.4 * pc12) + (0.2 * pc22) + (0.4 * pc32)
                 data2 = [Creating2, Dribbling2, Poaching2, Finishing2, Heading2, DefOutput2, Progression2]
 
 
