@@ -395,7 +395,7 @@ if mode == 'Player Overview':
             Creating = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Chance Creation']) 
             Carrying = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Carrying'])
             Technical = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Ball Retention'])
-            BoxThreat = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Receiving Forward'])
+            BoxThreat = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Progression'])
             DefAccuracy = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Tackle Accuracy'])
             DefEngage = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Defensive Output'])
 
@@ -404,15 +404,15 @@ if mode == 'Player Overview':
 
             data1 = [BoxThreat, Creating, Technical, DefAccuracy, DefEngage, DefendingHigh, Heading]
             #if league1 in ws_leagues: data1 = [BoxThreat, Creating, Technical, DefAccuracy, DefEngage, 0, Heading]
-            metrics = ['Receiving', 'Chance Creation', 'Ball Retention', 'Tackle Accuracy', 'Defensive Output', 'Pressing','Heading']
-            metric_names = ['Receiving', 'Chance Creation', 'Ball Retention', 'Tackle\nAccuracy', 'Defensive Output', 'Defending High','Heading']
+            metrics = ['Progression', 'Chance Creation', 'Ball Retention', 'Tackle Accuracy', 'Defensive Output', 'Pressing','Heading']
+            metric_names = ['Progression', 'Chance Creation', 'Ball Retention', 'Tackle\nAccuracy', 'Defensive Output', 'Defending High','Heading']
             unavail_metrics = "Defending High"
 
             if compare == 'Yes':
                 Creating2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Chance Creation']) 
                 Carrying2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Carrying'])
                 Technical2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Ball Retention'])
-                BoxThreat2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Receiving Forward'])
+                BoxThreat2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Progression'])
                 DefAccuracy2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Tackle Accuracy'])
                 DefEngage2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Defensive Output'])
 
