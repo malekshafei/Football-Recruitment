@@ -33,7 +33,7 @@ from datetime import datetime, timedelta
 
 file_name = 'InternationalMensData.parquet'
 df = pd.read_parquet(file_name)
-df = df.drop_duplicates(subset = ['Player', 'Team', 'Competition', 'Season', 'Position Group'])
+df = df.drop_duplicates(subset = ['Player', 'Team', 'Competition', 'Season', 'Position Group']).sort_values(by = ['Season Order', 'Minutes'], ascending= [False, False])
 print('reading file')
 st.set_page_config( 
     page_title="Racing Recruitment",
@@ -1031,7 +1031,7 @@ if  mode == 'Multi Player Dot Graph':
 
     if position_group1 == 'CBs': metrics = ['Ball Retention', 'Progressive Passing', 'Heading', 'Defensive Output', 'Tackle Accuracy']
     if position_group1 == 'WBs': metrics = ['Ball Retention', 'Chance Creation', 'Receiving Forward', 'Defensive Output', 'Tackle Accuracy']
-    if position_group1 == 'CMs': metrics = ['Heading','Chance Creation', 'Receiving Forward','Pressing','Defensive Output', 'Tackle Accuracy']
+    if position_group1 == 'CMs': metrics = ['Heading','Chance Creation', 'Receiving Forward','Defensive Output', 'Tackle Accuracy']
     if position_group1 in ['Ws', 'AMs']: metrics = ['Defensive Output', 'Finishing', 'Poaching', 'Dribbling', 'Chance Creation']
     if position_group1 == 'STs': metrics = ['Chance Creation', 'Heading','Defensive Output', 'Finishing', 'Poaching']
 
@@ -1161,6 +1161,145 @@ if  mode == 'Multi Player Dot Graph':
    
 
 
+def get_columns_to_compare(row):
+    if row['pos_group'] == 4:
+        columns = ['Tackle Accuracy', 'Defensive Output', 'Heading', 'Progressive Passing', 'Ball Retention']
+        if pd.notna(row['Defending High']):
+            columns.append('Defending High')
+    elif row['pos_group'] == 3:
+        columns = ['Tackle Accuracy', 'Defensive Output', 'Ball Retention', 'Crossing', 'Chance Creation', 'Progression', 'Receiving Forward', 'Heading', 'Carrying']
+        if pd.notna(row['Defending High']):
+            columns.extend(['Defending High'])
+    elif row['pos_group'] == 6:
+        columns = ['Tackle Accuracy', 'Defensive Output', 'Ball Retention', 'Chance Creation', 'Progression', 'Receiving Forward', 'Heading', 'Carrying']
+        if pd.notna(row['Defending High']):
+            columns.extend(['Defending High'])
+    elif row['pos_group'] in [7, 10]:
+        columns = ['Defensive Output', 'Ball Retention', 'Chance Creation', 'Progression', 'Dribbling', 'Poaching', 'Finishing']
+    elif row['pos_group'] == 9:
+        columns = ['Defensive Output', 'Ball Retention', 'Chance Creation', 'Dribbling', 'Poaching', 'Finishing', 'Heading']
+    else:
+        columns = ['Ovr']
+    return columns
+
+def normalize(series):
+    series = pd.to_numeric(series, errors='coerce')  # Convert to numeric, forcing non-numeric values to NaN
+    min_val = series.min()
+    max_val = series.max()
+    if pd.isna(min_val) or pd.isna(max_val) or min_val == max_val:
+        return pd.Series(1, index=series.index)  # All values are the same or all NaN
+    return (series - min_val) / (max_val - min_val)
+
+def cosine_sim(a, b):
+    a = np.array(a).reshape(1, -1)
+    b = np.array(b).reshape(1, -1)
+    return np.dot(a, b.T) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+
+
+
+if mode == 'Player Overview':
+    med_mins = 0
+    col1, col2 = st.columns(2)
+    with col1:
+        BestPlayers = df[(df['Position Group'] == position_group1) & (df['Competition'] == league1)]
+
+        BestPlayers['Season'] = BestPlayers['Season'].astype(str)
+        #filtered_seasons = BestPlayers['Season'][BestPlayers['Season'].str.len() < 8]
+        max_season_order = BestPlayers['Season Order'].max()
+        BestPlayers = BestPlayers[(BestPlayers['Season Order'] == max_season_order) & (BestPlayers['Season'].str.len() < 8)]
+        max_season = BestPlayers['Season'].values[0]
+
+
+
+        st.write(f"Best {position_group1} in {max_season} {league1}")
+                
+        med_mins = np.median(BestPlayers['Minutes'])
+        BestPlayers = BestPlayers[BestPlayers['Minutes'] > med_mins].sort_values(by = 'Ovr', ascending=False)[:10]
+        i = 1
+        for _, row in BestPlayers.iterrows():
+            st.write(f"{i}. {row['Player']}  \n({row['Team']} - {row['Age']} - {row['Detailed Position']} - {int(row['Minutes'])} mins)")
+            i += 1
+    
+    
+    with col2:
+        #print('hiii')
+        # Assuming you have position_group2 and league2 defined similarly to col1
+        player_row = df[(df['Season'] == season1) & (df['Position Group'] == position_group1) & (df['Competition'] == league1) & (df['Player'] == name1)]
+        AllPlayers = df[(df['Position Group'] == position_group1) & (df['Competition'] == league1) & (df['Minutes'] > med_mins)]
+        
+
+        #print(len(AllPlayers))
+
+        # Filter for the most recent season
+        AllPlayers['Season'] = AllPlayers['Season'].astype(str)
+        max_season_order = AllPlayers['Season Order'].max()
+        AllPlayers = AllPlayers[(AllPlayers['Season Order'] == max_season_order) & (AllPlayers['Season'].str.len() < 8)]
+        AllPlayers = pd.concat([AllPlayers, player_row]).drop_duplicates(subset=['Player', 'Season'])
+        max_season = AllPlayers['Season'].values[0]
+        # print(len(AllPlayers))
+        # print(max_season)
+
+        st.write(f"Most Similar {position_group1} to {name1} in {max_season} {league1}")
+
+        AllPlayers['columns_to_compare'] = AllPlayers.apply(get_columns_to_compare, axis=1)
+
+        def calculate_similarity(player1, player2):
+            columns = list(set(player1['columns_to_compare']) & set(player2['columns_to_compare']))
+            if not columns:
+                return 0
+            values1 = player1[columns].values
+            values2 = player2[columns].values
+            values1_norm = normalize(pd.Series(values1))
+            values2_norm = normalize(pd.Series(values2))
+            
+            return cosine_sim(values1_norm, values2_norm)[0][0]
+
+        
+        
+        def get_most_similar_players(player_name, n=10):
+            player_rows = AllPlayers[AllPlayers['Player'] == player_name]
+            if player_rows.empty:
+                st.error(f"Player {player_name} not found in the dataset.")
+                return pd.DataFrame()
+            
+            player = player_rows.iloc[0]
+            
+            # Check for NAs in the player's data
+            na_columns = player[player['columns_to_compare']].isna().sum()
+            if na_columns > 0:
+                st.warning(f"Player {player_name} has {na_columns} NA values in their data.")
+            
+            similarities = AllPlayers.apply(lambda x: calculate_similarity(player, x), axis=1)
+            similar_indices = similarities.sort_values(ascending=False).index[1:n+1]  # Exclude the player itself
+            similar_players = AllPlayers.loc[similar_indices]
+            return pd.DataFrame({
+                'Player': similar_players['Player'],
+                'Similarity': similarities[similar_indices],
+                'Team': similar_players['Team'],
+                'Age': similar_players['Age'],
+                'Detailed Position': similar_players['Detailed Position'],
+                'Minutes': similar_players['Minutes']
+            })
+        
+
+       
+        similar_players = get_most_similar_players(name1)
+        
+        for i, (_, row) in enumerate(similar_players.iterrows(), 1):
+            similarity_percentage = round(row['Similarity'] * 100, 2)
+            st.write(f"{i}. {row['Player']} (Similarity: {similarity_percentage}%)  \n"
+                    f"({row['Team']} - {row['Age']} - {row['Detailed Position']} - {int(row['Minutes'])} mins)")
+            
+        player = AllPlayers[AllPlayers['Player'] == name1].iloc[0] 
+    
+
+
+
+        
+
+
+
 if position_group1 == 'CBs' and mode1 == 'Basic':
     st.write("Metric Definitions:")
     st.write("Progressive Passing: How often and how accurate the player is at making progressive, long, and final third entry passes")
@@ -1187,7 +1326,7 @@ if position_group1 == 'CMs' and mode1 == 'Basic':
     st.write("Chance Creation: Assists, xA, Key Passes, Passes & Crosses Completed into Box")
     st.write("Receiving: How often the player receives the ball in advanced positions")
     st.write("Heading: How often the player wins aerial duels and how accurate they are in them")
-    st.write("Pressing: How often the player makes pressure & counterpressure actions, with an emphasis on attacking third pressures [Only available for leagues with StatsBomb data]")
+    #st.write("Pressing: How often the player makes pressure & counterpressure actions, with an emphasis on attacking third pressures [Only available for leagues with StatsBomb data]")
     st.write("Defensive Output: How often the player makes tackles, interceptions, blocks")
     st.write("Tackle Accuracy: Ratio of tackles won per attacker faced")
 
