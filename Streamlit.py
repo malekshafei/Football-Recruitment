@@ -1218,7 +1218,7 @@ if mode == 'Player Overview':
         BestPlayers = BestPlayers[BestPlayers['Minutes'] > med_mins].sort_values(by = 'Ovr', ascending=False)[:10]
         i = 1
         for _, row in BestPlayers.iterrows():
-            st.write(f"{i}. {row['Player']}  \n({row['Team']} - {row['Age']} - {row['Detailed Position']} - {int(row['Minutes'])} mins)")
+            st.write(f"{i}. {row['Player']}  \n({row['Team']} - {round(row['Age'],1)} - {row['Detailed Position']} - {int(row['Minutes'])} mins)")
             i += 1
     
     
