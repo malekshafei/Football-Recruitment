@@ -1289,7 +1289,7 @@ if mode == 'Player Overview':
         for i, (_, row) in enumerate(similar_players.iterrows(), 1):
             similarity_percentage = round(row['Similarity'] * 100, 2)
             st.write(f"{i}. {row['Player']} (Similarity: {similarity_percentage}%)  \n"
-                    f"({row['Team']} - {row['Age']} - {row['Detailed Position']} - {int(row['Minutes'])} mins)")
+                    f"({row['Team']} - {round(row['Age'],1)} - {row['Detailed Position']} - {int(row['Minutes'])} mins)")
             
         player = AllPlayers[AllPlayers['Player'] == name1].iloc[0] 
     
