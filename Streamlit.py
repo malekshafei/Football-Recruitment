@@ -786,6 +786,10 @@ if mode == 'Player Overview':
             club2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Team']
             mins2 = int(df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Minutes'])
             detailed_pos2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Detailed Position']
+            detailed_pos = detailed_pos.split(",")[0]
+
+            detailed_pos2 = detailed_pos2.split(",")[0]
+
 
             plt.text(40,65,f"{name1}",ha = 'left', fontsize=35, color = 'blue', fontweight = 'bold')
             #plt.text(40,110,f"{club} - {season1} {league1}",ha = 'left', fontsize=30, color = 'green', fontname='Avenir')
