@@ -166,12 +166,12 @@ if mode == 'Player Overview':
 
         ws_leagues = ['Albania', 'Algeria', 'Andorra', 'Argentina2','Argentina3', 'Armenia', 'Austria2', 
                       'Azerbaijan', 'Belgium2', 'Bolivia','Bosnia','Brazil3', 'Bulgaria', 'Canada', 'Chile', 'Croatia',
-                       'Costa Rica', 'Cyprus', 'Dominican Republic', 'Ecuador', 'El Salvador',
+                       'Costa Rica', 'Cyprus', 'Colombia2','Dominican Republic', 'Ecuador', 'El Salvador',
                         'England5', 'Estonia', 'Finland', 'France3', 'Georgia', 'Germany4', 'Ghana', 'Guatemala',
                          'Honduras', 'Hungary', 'Hungary2', 'Iceland', 'Italy3', 'Jamaica', 'Japan2', 'Korea2', 
                          'Kosovo', 'Latvia', 'Lithuania', 'Mexico2', 'Moldova', 'Montegro', 'Morocco',
                          'Nicaragua', 'Macedonia', 'Norway2', 'Panama', 'Paraguay', 'Peru', 'Portugal2',
-                         'Portugal3', 'Ireland', 'Romania', 'Scotland2', 'Serbia', 'Serbia2', 'Slovakia', 'Slovenia',
+                         'Portugal3', 'Ireland', 'Ireland2','Romania', 'Scotland2', 'Serbia', 'Serbia2', 'Slovakia', 'Slovenia',
                          'Spain3', 'Sweden2', 'Switzerland2', 'Tunisia', 'Turkey2', 'Ukraine', 'Ukraine2', 
                          'USA2', 'USA3', 'USA4', 'Uruguay', 'Uzbekistan', 'Venezuela'
                          ]
