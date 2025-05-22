@@ -28,7 +28,15 @@ from datetime import datetime, timedelta
 #     st.session_state.season1 = '2024'
 
 
+if 'selected_color' not in st.session_state:
 
+    st.session_state.selected_color = 'green'#"#C00C0D"
+    st.session_state.selected_color2 = "green"
+    st.session_state.selected_color3 = "blue"
+    st.session_state.selected_color4 = "yellow"
+
+#color_1 = 'Red'
+#print(color_1,st.session_state.selected_color )
 
 
 file_name = 'InternationalMensData.parquet'
@@ -61,14 +69,15 @@ custom_css = f"""
 }}
 html, body, [class*="css"] {{
     font-family: 'Montserrat', sans-serif;
-    background-color: #C00C0D;
+    background-color: '{st.session_state.selected_color}';
     color: #ffffff;
 }}
 .sidebar .sidebar-content {{
-    background-color: #C00C0D;
+    background-color: {st.session_state.selected_color};
 }}
 </style>
 """
+
 
 st.markdown(custom_css, unsafe_allow_html=True)
 pos_list = ['CBs', 'WBs', 'CMs', 'AMs', 'Ws', 'STs']
@@ -372,13 +381,13 @@ if mode == 'Player Overview':
             unavail_metrics = "Final Third Touches"
 
             if compare == 'Yes':
-                KeyPasses2 = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctKey Passes']) 
-                Crosses2 = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctCrosses Completed into Box'])
-                PassesIntoBox2 = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctPasses into Box'])
-                xA2 = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctxA'])
-                Assists2 = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctAssists'])
-                FinalThirdTouches2 = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctFinal Third Receptions'])
-                TakeOns2 = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctTake Ons']
+                KeyPasses2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctKey Passes']) 
+                Crosses2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctCrosses Completed into Box'])
+                PassesIntoBox2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctPasses into Box'])
+                xA2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctxA'])
+                Assists2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctAssists'])
+                FinalThirdTouches2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctFinal Third Receptions'])
+                TakeOns2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctTake Ons']
                 
                 data2 = [KeyPasses2, Crosses2, PassesIntoBox2, xA2, Assists2, FinalThirdTouches2,TakeOns2]
                 #if league2 in ws_leagues: data2 = [KeyPasses, Crosses, PassesIntoBox, xA, Assists, 0,TakeOns]
@@ -666,11 +675,11 @@ if mode == 'Player Overview':
         if compare == 'Yes':
             data2 += data2[:1]
 
-        fig, ax = plt.subplots(figsize=(16, 9), subplot_kw=dict(polar=True, facecolor='#C00C0D'))
-        fig.patch.set_facecolor('#C00C0D')
-        fig.set_facecolor('#C00C0D')
+        fig, ax = plt.subplots(figsize=(16, 9), subplot_kw=dict(polar=True, facecolor=st.session_state.selected_color))
+        fig.patch.set_facecolor(st.session_state.selected_color)
+        fig.set_facecolor(st.session_state.selected_color)
 
-        ax.set_facecolor('#C00C0D')
+        ax.set_facecolor(st.session_state.selected_color)
 
 
         ax.spines['polar'].set_visible(False)
@@ -681,15 +690,15 @@ if mode == 'Player Overview':
         ax.plot(angles, [25] * len(angles), color='white', linewidth=0.7, linestyle='-')
 
         if compare == 'No':
-            ax.plot(angles, data1, color='green', linewidth=0.4, linestyle='-', marker='o', markersize=3)
-            ax.fill(angles, data1, color='green', alpha=0.95)
+            ax.plot(angles, data1, color=st.session_state.selected_color2, linewidth=0.4, linestyle='-', marker='o', markersize=3)
+            ax.fill(angles, data1, color=st.session_state.selected_color2, alpha=0.95)
 
         if compare == 'Yes':
-            ax.plot(angles, data1, color='blue', linewidth=2.5, linestyle='-', marker='o', markersize=3)
-            ax.fill(angles, data1, color='blue', alpha=0.7)
+            ax.plot(angles, data1, color=st.session_state.selected_color3, linewidth=2.5, linestyle='-', marker='o', markersize=3)
+            ax.fill(angles, data1, color=st.session_state.selected_color3, alpha=0.7)
 
-            ax.plot(angles, data2, color='yellow', linewidth=2.5, linestyle='-', marker='o', markersize=3)
-            ax.fill(angles, data2, color='yellow', alpha=0.55)
+            ax.plot(angles, data2, color=st.session_state.selected_color4, linewidth=2.5, linestyle='-', marker='o', markersize=3)
+            ax.fill(angles, data2, color=st.session_state.selected_color4, alpha=0.55)
 
 
 
@@ -700,7 +709,7 @@ if mode == 'Player Overview':
         ax.set_yticks([])
         ax.set_ylim(0, 100)
 
-        ax.plot(0, 0, 'ko', markersize=4, color='#C00C0D')
+        ax.plot(0, 0, 'ko', markersize=4, color=st.session_state.selected_color)
         #fig.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
         #fig.subplots_adjust(left=0.25, right=0.75, top=0.75, bottom=0.25)
         fig.subplots_adjust(left=0.1, right=0.9, top=0.85, bottom=0.15)
@@ -791,19 +800,19 @@ if mode == 'Player Overview':
             detailed_pos2 = detailed_pos2.split(",")[0]
 
 
-            plt.text(40,65,f"{name1}",ha = 'left', fontsize=35, color = 'blue', fontweight = 'bold')
-            #plt.text(40,110,f"{club} - {season1} {league1}",ha = 'left', fontsize=30, color = 'green', fontname='Avenir')
-            #plt.text(40,150,f"{mins} Minutes - {detailed_pos}",ha = 'left', fontsize=30, color = 'green', fontname='Avenir')
-            plt.text(40,110,f"{club}",ha = 'left', fontsize=30, color = 'blue')#, fontname='Avenir')
-            plt.text(40,150,f"{season1} {league1}",ha = 'left', fontsize=30, color = 'blue')#, fontname='Avenir')
-            plt.text(40,190,f"{mins} Mins - {detailed_pos}",ha = 'left', fontsize=30, color = 'blue')#, fontname='Avenir')
+            plt.text(40,65,f"{name1}",ha = 'left', fontsize=35, color = st.session_state.selected_color3, fontweight = 'bold')
+            #plt.text(40,110,f"{club} - {season1} {league1}",ha = 'left', fontsize=30, color = st.session_state.selected_color2, fontname='Avenir')
+            #plt.text(40,150,f"{mins} Minutes - {detailed_pos}",ha = 'left', fontsize=30, color = st.session_state.selected_color2, fontname='Avenir')
+            plt.text(40,110,f"{club}",ha = 'left', fontsize=30, color = st.session_state.selected_color3)#, fontname='Avenir')
+            plt.text(40,150,f"{season1} {league1}",ha = 'left', fontsize=30, color = st.session_state.selected_color3)#, fontname='Avenir')
+            plt.text(40,190,f"{mins} Mins - {detailed_pos}",ha = 'left', fontsize=30, color = st.session_state.selected_color3)#, fontname='Avenir')
         
-            plt.text(1560,65,f"{name2}",ha = 'right', fontsize=35, color = 'yellow', fontweight = 'bold')
+            plt.text(1560,65,f"{name2}",ha = 'right', fontsize=35, color = st.session_state.selected_color4, fontweight = 'bold')
             #plt.text(1560,110,f"{club2} - {season2} {league2}",ha = 'right', fontsize=30, color = 'red', fontname='Avenir')
             #plt.text(1560,150,f"{mins2} Minutes - {detailed_pos2}",ha = 'right', fontsize=30, color = 'red', fontname='Avenir')
-            plt.text(1560,110,f"{club2}",ha = 'right', fontsize=30, color = 'yellow')#, fontname='Avenir')
-            plt.text(1560,150,f"{season2} {league2}",ha = 'right', fontsize=30, color = 'yellow')#, fontname='Avenir')
-            plt.text(1560,190,f"{mins2} Mins - {detailed_pos2}",ha = 'right', fontsize=30, color = 'yellow')#, fontname='Avenir')
+            plt.text(1560,110,f"{club2}",ha = 'right', fontsize=30, color = st.session_state.selected_color4)#, fontname='Avenir')
+            plt.text(1560,150,f"{season2} {league2}",ha = 'right', fontsize=30, color = st.session_state.selected_color4)#, fontname='Avenir')
+            plt.text(1560,190,f"{mins2} Mins - {detailed_pos2}",ha = 'right', fontsize=30, color = st.session_state.selected_color4)#, fontname='Avenir')
             plt.text(30,880,f"Data compared to {position_group1} in player's league",ha = 'left', fontsize=15, color = 'white')#, fontname='Avenir')
 
             if league1 in ws_leagues and league2 in ws_leagues: plt.text(1570,880,f"{unavail_metrics}\ndata unavailable",ha = 'right', fontsize=16, color = 'white')#, fontname='Avenir') 
@@ -1045,13 +1054,13 @@ if  mode == 'Multi Player Dot Graph':
     #players = [player1, player2, player3, player4, player5 ]
     #players = df['Player']
     players = df['unique_label']
-    colors = ['purple', 'red', 'green', 'orange', 'black', 'yellow']
+    colors = ['purple', 'red', st.session_state.selected_color2, 'orange', 'black', st.session_state.selected_color4]
     #fig, ax = plt.subplots(figsize=(10, 6))
     fig, ax = plt.subplots(figsize=(16, 9))
-    fig.patch.set_facecolor('#C00C0D')
-    fig.set_facecolor('#C00C0D')
+    fig.patch.set_facecolor(st.session_state.selected_color)
+    fig.set_facecolor(st.session_state.selected_color)
 
-    ax.set_facecolor('#C00C0D')
+    ax.set_facecolor(st.session_state.selected_color)
     #fig, ax = plt.subplots(figsize=(16, 9))
 
 
@@ -1098,7 +1107,7 @@ if  mode == 'Multi Player Dot Graph':
     #ax.yaxis.set_tick_params(pad=60)
 
     for label in ax.get_yticklabels():
-        label.set_bbox(dict(facecolor='#C00C0D', edgecolor='None', alpha=0.65, pad=5))
+        label.set_bbox(dict(facecolor=st.session_state.selected_color, edgecolor='None', alpha=0.65, pad=5))
 
     ax.set_yticks(np.arange(1, len(metrics) + 1))
     ax.set_yticklabels(metrics, size = 23, ha='right', color = 'white')#, fontname='Avenir')
@@ -1115,7 +1124,7 @@ if  mode == 'Multi Player Dot Graph':
     legend_labels = [f'{label}\n{int(df.loc[df["unique_label"] == label, "Minutes"].iloc[0])} Minutes' for label in labels]
 
     by_label = dict(zip(labels, handles))
-    legend = ax.legend(by_label.values(), legend_labels, facecolor = '#C00C0D', loc='upper center', bbox_to_anchor=(0.5, -0.2), fontsize=16, ncol=len(players))
+    legend = ax.legend(by_label.values(), legend_labels, facecolor = st.session_state.selected_color, loc='upper center', bbox_to_anchor=(0.5, -0.2), fontsize=16, ncol=len(players))
      
     for text in legend.get_texts():
         text.set_color('white')
@@ -1356,3 +1365,35 @@ if position_group1 == 'STs' and mode1 == 'Basic':
      
 
 #streamlit run streamlit.py
+
+# color_map = {
+#     'Red': "#C00C0D",
+#     'Blue': "#014f88",
+#     'Purple': "#400179"
+# }
+# reverse_color_map = {v: k for k, v in color_map.items()}
+# current_color_name = reverse_color_map.get(st.session_state.selected_color, 'Red')
+
+#color_1 = st.radio('Choose Color', ['Red', 'Blue', 'Purple'])
+color_1 = st.radio(
+    'Choose Color', 
+    ['Red', 'Blue', 'Purple']
+)
+#print(color_1,st.session_state.selected_color )
+if color_1 == 'Red':
+    st.session_state.selected_color = "#C00C0D"
+    st.session_state.selected_color2 = "green"
+    st.session_state.selected_color3 = "blue"
+    st.session_state.selected_color4 = "yellow"
+
+if color_1 == 'Blue':
+    st.session_state.selected_color = "#014f88"
+    st.session_state.selected_color2 = "green"
+    st.session_state.selected_color3 = "white"
+    st.session_state.selected_color4 = "yellow"
+
+if color_1 == 'Purple':
+    st.session_state.selected_color = "#400179"
+    st.session_state.selected_color2 = "green"
+    st.session_state.selected_color3 = "white"
+    st.session_state.selected_color4 = "yellow"
