@@ -164,17 +164,41 @@ if mode == 'Player Overview':
             with col2: name2 = st.selectbox("Select other Player", options=df[(df['Position Group'] == position_group1) & (df['Competition'] == league2)]['Player'].unique())
             with col3: season2 = st.selectbox("Select other season", options=sorted(df[(df['Competition'] == league2) & (df['Position Group'] == position_group1) & (df['Player'] == name2)]['Season'].unique(), reverse=True))
 
-        ws_leagues = ['Albania', 'Algeria', 'Andorra', 'Argentina2','Argentina3', 'Armenia', 'Austria2', 
-                      'Azerbaijan', 'Belgium2', 'Bolivia','Bosnia','Brazil3', 'Bulgaria', 'Canada', 'Chile', 'Croatia',
-                       'Costa Rica', 'Cyprus', 'Colombia2','Dominican Republic', 'Ecuador', 'El Salvador',
-                        'England5', 'Estonia', 'Finland', 'France3', 'Georgia', 'Germany4', 'Ghana', 'Guatemala',
-                         'Honduras', 'Hungary', 'Hungary2', 'Iceland', 'Italy3', 'Jamaica', 'Japan2', 'Korea2', 
-                         'Kosovo', 'Latvia', 'Lithuania', 'Mexico2', 'Moldova', 'Montegro', 'Morocco',
-                         'Nicaragua', 'Macedonia', 'Norway2', 'Panama', 'Paraguay', 'Peru', 'Portugal2',
-                         'Portugal3', 'Ireland', 'Ireland2','Romania', 'Scotland2', 'Serbia', 'Serbia2', 'Slovakia', 'Slovenia',
-                         'Spain3', 'Sweden2', 'Switzerland2', 'Tunisia', 'Turkey2', 'Ukraine', 'Ukraine2', 
-                         'USA2', 'USA3', 'USA4', 'Uruguay', 'Uzbekistan', 'Venezuela'
-                         ]
+        # ws_leagues = ['Albania', 'Algeria', 'Andorra', 'Argentina2','Argentina3', 'Armenia', 'Austria2', 
+        #               'Azerbaijan', 'Belgium2', 'Bolivia','Bosnia','Brazil3', 'Bulgaria', 'Canada', 'Chile', 'Croatia',
+        #                'Costa Rica', 'Cyprus', 'Colombia2','Dominican Republic', 'Ecuador', 'El Salvador',
+        #                 'England5', 'Estonia', 'Finland', 'France3', 'Georgia', 'Germany4', 'Ghana', 'Guatemala',
+        #                  'Honduras', 'Hungary', 'Hungary2', 'Iceland', 'Italy3', 'Jamaica', 'Japan2', 'Korea2', 
+        #                  'Kosovo', 'Latvia', 'Lithuania', 'Mexico2', 'Moldova', 'Montegro', 'Morocco',
+        #                  'Nicaragua', 'Macedonia', 'Norway2', 'Panama', 'Paraguay', 'Peru', 'Portugal2',
+        #                  'Portugal3', 'Ireland', 'Ireland2','Romania', 'Scotland2', 'Serbia', 'Serbia2', 'Slovakia', 'Slovenia',
+        #                  'Spain3', 'Sweden2', 'Switzerland2', 'Tunisia', 'Turkey2', 'Ukraine', 'Ukraine2', 
+        #                  'USA2', 'USA3', 'USA4', 'Uruguay', 'Uzbekistan', 'Venezuela'
+        #                  ]
+
+        ws_leagues = [
+            'Albania','Algeria','Andorra','Argentina','Argentina2','Argentina3','ArgentinaCopa','Armenia','Austria2','Azerbaijan',
+            'Belgium2','Benin','Bolivia','Bosnia','Brazil PaulistaU20','Brazil3','BrazilU17','BrazilU20','Bulgaria',
+            'CAF Champions League','CAF Confederation Cup','Canada','Chile2','Colombia2','Copa Libertadores','Costa Rica','Croatia','Croatia2','Cyprus','Czech2','CzechU19',
+            'Denmark3','Denmark4','DenmarkU15','DenmarkU17','DenmarkU172','DenmarkU19','DenmarkU192','Dominican Republic',
+            'Ecuador','Ecuador2','El Salvador','England5','England6','EnglandU21','Estonia',
+            'Faroe Islands','Finland','Finland2','FinlandU17','France3','France4',
+            'Georgia','Germany3','Germany4','GermanyU17','GermanyU19','Ghana','Guatemala',
+            'Honduras','Hungary','Hungary2',
+            'Iceland','Iceland2','Ireland','Ireland2','Israel','Italy3',
+            'Jamaica','Japan2','Japan3',
+            'Kazakhstan','Korea2','Korea3','Kosovo',
+            'Latvia','Lithuania',
+            'Macedonia','Mexico','Mexico2','MexicoU19','MexicoU23','Moldova','Montenegro','Morocco','Netherlands3',
+            'Nicaragua','Northern Ireland','Norway2','Norway3','NorwayU17','NorwayU172','NorwayU19','NorwayU192',
+            'Panama','Paraguay','Peru','Poland2','Poland3','Portugal2','Portugal3','PortugalU17','PortugalU19','PortugalU23','Romania','Romania2',
+            'Scotland2','Scotland3','Serbia','Serbia2','SerbiaU17','SerbiaU19','Slovakia','Slovakia2','SlovakiaU19','Slovenia','Slovenia2','South Africa','Spain3','Spain4','Sweden2','Sweden3','SwedenU17','SwedenU19','Switzerland2','Switzerland3','SwitzerlandU17','SwitzerlandU19',
+            'Tunisia','Turkey2','U15 Conmebol','U16 Friendlies','U17 AFCON','U17 Asian Cup','U17 Concacaf','U17 Conmebol','U17 Euros','U17 Euros Qualification','U17 Friendlies','U17 World Cup',
+            'U19 Euros','U19 Euros Qualification',
+            'U20 AFCON','U20 Asian Cup','U20 Concacaf','U20 Conmebol','U20 Libertadores','U20 World Cup',
+            'U21 Euros','U21 Euros Qualification','U23 AFCON','U23 Asian Cup','U23 Conmebol','UEFA Youth League',
+            'USA2','USA3','USA4','Ukraine','Ukraine2','Ukraine3','UkraineU19','Uruguay','Uzbekistan','Venezuela'
+            ]
 
     # st.session_state['position_group1'] = position_group1
     # st.session_state['league1'] = league1
