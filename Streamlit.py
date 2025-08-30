@@ -656,7 +656,7 @@ if mode == 'Player Overview':
                 #if league2 in ws_leagues: data2 = [TacklesWon2, TacklePct2, Interceptions2, Pressures2, CounterPressures2, 0,0]
 
 
-
+ 
         if position_group1 == 'STs' and mode1 == "Basic":
             #Goal_Contributions = df.loc[df.index[(df['Name'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'FW_Goal_Contribution']
             Creating = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Chance Creation'])
