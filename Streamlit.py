@@ -1190,21 +1190,21 @@ if  mode == 'Multi Player Dot Graph':
 
 
 def get_columns_to_compare(row):
-    if row['pos_group'] == 4:
+    if row['Position Group'] == 'CBs':
         columns = ['Tackle Accuracy', 'Defensive Output', 'Heading', 'Progressive Passing', 'Ball Retention']
         if pd.notna(row['Defending High']):
             columns.append('Defending High')
-    elif row['pos_group'] == 3:
+    elif row['Position Group'] == 'WBs':
         columns = ['Tackle Accuracy', 'Defensive Output', 'Ball Retention', 'Crossing', 'Chance Creation', 'Progression', 'Receiving Forward', 'Heading', 'Carrying']
         if pd.notna(row['Defending High']):
             columns.extend(['Defending High'])
-    elif row['pos_group'] == 6:
+    elif row['Position Group'] == 'CMs':
         columns = ['Tackle Accuracy', 'Defensive Output', 'Ball Retention', 'Chance Creation', 'Progression', 'Receiving Forward', 'Heading', 'Carrying']
         if pd.notna(row['Defending High']):
             columns.extend(['Defending High'])
-    elif row['pos_group'] in [7, 10]:
+    elif row['Position Group'] in ['AMs', 'Ws']:
         columns = ['Defensive Output', 'Ball Retention', 'Chance Creation', 'Progression', 'Dribbling', 'Poaching', 'Finishing']
-    elif row['pos_group'] == 9:
+    elif row['Position Group'] == 'STs':
         columns = ['Defensive Output', 'Ball Retention', 'Chance Creation', 'Dribbling', 'Poaching', 'Finishing', 'Heading']
     else:
         columns = ['Ovr']
