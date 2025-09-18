@@ -232,7 +232,7 @@ if mode == 'Player Overview':
             Heading = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Heading']
             Carrying = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'SPt']
             BallRetention = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Ball Retention']
-            ProgressivePassing = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Progressive Passing']
+            ProgressivePassing = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Progression']
             DefAccuracy = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Tackle Accuracy']
             DefEngage = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Defensive Output']
             DefHigh = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Defending High']
@@ -240,14 +240,14 @@ if mode == 'Player Overview':
 
             data1 = [Carrying, Heading, BallRetention, ProgressivePassing, DefAccuracy, DefEngage, DefHigh]
             #if league1 in ws_leagues: data1 = [0, Heading,  BallRetention, ProgressivePassing, DefAccuracy, DefEngage, 0]
-            metrics = ['SPt', 'Heading','Ball Retention', 'Progressive Passing', 'Tackle Accuracy', 'Defensive Output', 'Defending High']
+            metrics = ['SPt', 'Heading','Ball Retention', 'Progression', 'Tackle Accuracy', 'Defensive Output', 'Defending High']
             metric_names = ['Set Piece\nThreat', 'Heading', 'Ball Retention', 'Progressive\nPassing', 'Tackle\nAccuracy', 'Defensive Output', 'Defending\nHigh']
             unavail_metrics = "Set Piece and Defending High"
             if compare == 'Yes':
                 Heading2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Heading']
                 Carrying2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'SPt']
                 BallRetention2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Ball Retention']
-                ProgressivePassing2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Progressive Passing']
+                ProgressivePassing2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Progression']
                 DefAccuracy2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Tackle Accuracy']
                 DefEngage2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Defensive Output']
                 DefHigh2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Defending High']
@@ -1057,7 +1057,7 @@ if  mode == 'Multi Player Dot Graph':
     #print(df)
     # Plotting
 
-    if position_group1 == 'CBs': metrics = ['Ball Retention', 'Progressive Passing', 'Heading', 'Defensive Output', 'Tackle Accuracy']
+    if position_group1 == 'CBs': metrics = ['Ball Retention', 'Progression', 'Heading', 'Defensive Output', 'Tackle Accuracy']
     if position_group1 == 'WBs': metrics = ['Ball Retention', 'Chance Creation', 'Receiving Forward', 'Defensive Output', 'Tackle Accuracy']
     if position_group1 == 'CMs': metrics = ['Heading','Chance Creation', 'Receiving Forward','Defensive Output', 'Tackle Accuracy']
     if position_group1 in ['Ws', 'AMs']: metrics = ['Defensive Output', 'Finishing', 'Poaching', 'Dribbling', 'Chance Creation']
@@ -1191,7 +1191,7 @@ if  mode == 'Multi Player Dot Graph':
 
 def get_columns_to_compare(row):
     if row['Position Group'] == 'CBs':
-        columns = ['Tackle Accuracy', 'Defensive Output', 'Heading', 'Progressive Passing', 'Ball Retention']
+        columns = ['Tackle Accuracy', 'Defensive Output', 'Heading', 'Progression', 'Ball Retention']
         if pd.notna(row['Defending High']):
             columns.append('Defending High')
     elif row['Position Group'] == 'WBs':
@@ -1330,7 +1330,7 @@ if mode == 'Player Overview':
 
 if position_group1 == 'CBs' and mode1 == 'Basic':
     st.write("Metric Definitions:")
-    st.write("Progressive Passing: How often and how accurate the player is at making progressive, long, and final third entry passes")
+    st.write("Progression: How often and how accurate the player is at making progressive, long, and final third entry passes")
     st.write("Ball Retention: A measure of how good they are at keeping the ball and not turning it over (passing and dribbling accuracies)")
     st.write("Carrying: Threat added from ball carries")
     st.write("Heading: How often the player wins aerial duels and how accurate they are in them")
