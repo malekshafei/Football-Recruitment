@@ -694,7 +694,7 @@ if mode == 'Player Overview':
         fig.patch.set_facecolor('#C00C0D')
         fig.set_facecolor('#C00C0D')
 
-        ax.set_facecolor('#C00C0D')
+        ax.set_facecolor('#C00C0D') 
 
 
         ax.spines['polar'].set_visible(False)
