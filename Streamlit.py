@@ -1227,7 +1227,7 @@ if mode == 'Player Rankings':
         leagues = st.multiselect("Select Leagues", sorted(df['Competition'].unique()), default=['Denmark'])
         df = df[df['Competition'].isin(leagues)]
     
-        age_range = st.slider("Age Range", 15, 40, (24,32))
+        age_range = st.slider("Age Range", 15, 40, (15,32))
         df = df[((df['Age'] >= age_range[0]) & (df['Age'] <= age_range[1])) | (pd.isna(df['Age']))]
 
         
