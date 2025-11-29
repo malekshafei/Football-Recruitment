@@ -31,7 +31,7 @@ from datetime import datetime, timedelta
 
 
 
-file_name = 'InternationalMensData.parquet'
+file_name = 'App-InternationalMensData.parquet'
 df = pd.read_parquet(file_name)
 df = df.drop_duplicates(subset = ['Player', 'Team', 'Competition', 'Season', 'Position Group']).sort_values(by = ['Season Order', 'Minutes'], ascending= [False, False])
 print('reading file')
@@ -44,8 +44,8 @@ st.set_page_config(
 )
 df.fillna(0, inplace=True)
 
-regular_font_path = '/Users/malekshafei/Downloads/Montserrat/static/Montserrat-Regular.ttf'
-bold_font_path = '/Users/malekshafei/Downloads/Montserrat/static/Montserrat-Bold.ttf'
+regular_font_path = 'Montserrat-Regular.ttf'
+bold_font_path = 'Montserrat-Bold.ttf'
 
 custom_css = f"""
 <style>
@@ -80,14 +80,16 @@ pos_list = ['CBs', 'WBs', 'CMs', 'AMs', 'Ws', 'STs']
 sorted_competitions = sorted(df['Competition'].unique())
 
 
-mode = st.selectbox("Select Mode", options=['Player Overview', 'Multi Player Dot Graph'])
+mode = st.selectbox("Select Mode", options=['Player Overview', 'Multi Player Dot Graph', 'Player Rankings'])
 
 if mode == 'Player Overview':
 
 
-    # file_name = 'InternationalWomensData.xlsx'
-    # df = pd.read_excel(file_name)
+    file_name = 'App-InternationalMensData.parquet'
+    df = pd.read_parquet(file_name)
     df = df[df['Detailed Position'] != 'GK']
+    df.fillna(0, inplace=True)
+
 
     
     #df['Position Group'] = df['pos_group']
@@ -140,12 +142,12 @@ if mode == 'Player Overview':
     col1, col2 = st.columns(2)
     with col1:
 
-        if position_group1 == 'CMs': mode1 = st.selectbox("Select Radar Type", options=["Basic", 'Defending', 'Buildup & Chance Creation', 'Box Threat'])
+        if position_group1 == 'CMs': mode1 = st.selectbox("Select Radar Type", options=["Basic", 'Buildup & Chance Creation', 'Box Threat'])
 
-        elif position_group1 == 'CBs': mode1 = st.selectbox("Select Radar Type", options=["Basic", 'In Possession', 'Defending'])
-        elif position_group1 in ['AMs', 'Ws', 'STs']: mode1 = st.selectbox("Select Radar Type", options=["Basic", 'Threat Creation', 'Shooting', 'Out of Possession'])
+        elif position_group1 == 'CBs': mode1 = st.selectbox("Select Radar Type", options=["Basic", 'In Possession'])
+        elif position_group1 in ['AMs', 'Ws', 'STs']: mode1 = st.selectbox("Select Radar Type", options=["Basic", 'Threat Creation', 'Shooting', ])
 
-        else: mode1 = st.selectbox("Select Radar Type", options=["Basic", 'Attacking', 'Defending'])
+        else: mode1 = st.selectbox("Select Radar Type", options=["Basic", 'Attacking',])
 
     
     if mode1 == 'Match by Match Overview': radar = False
@@ -230,7 +232,7 @@ if mode == 'Player Overview':
         if position_group1 == 'CBs' and mode1 == 'Basic':
                 
             Heading = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Heading']
-            Carrying = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'SPt']
+            Carrying = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Carrying']
             BallRetention = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Ball Retention']
             ProgressivePassing = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Progression']
             DefAccuracy = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Tackle Accuracy']
@@ -238,14 +240,14 @@ if mode == 'Player Overview':
             DefHigh = df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Defending High']
 
 
-            data1 = [Carrying, Heading, BallRetention, ProgressivePassing, DefAccuracy, DefEngage, DefHigh]
+            data1 = [Heading, Carrying, BallRetention, ProgressivePassing, DefAccuracy, DefEngage, DefHigh]
             #if league1 in ws_leagues: data1 = [0, Heading,  BallRetention, ProgressivePassing, DefAccuracy, DefEngage, 0]
-            metrics = ['SPt', 'Heading','Ball Retention', 'Progression', 'Tackle Accuracy', 'Defensive Output', 'Defending High']
-            metric_names = ['Set Piece\nThreat', 'Heading', 'Ball Retention', 'Progressive\nPassing', 'Tackle\nAccuracy', 'Defensive Output', 'Defending\nHigh']
-            unavail_metrics = "Set Piece and Defending High"
+            metrics = ['Heading','Carrying', 'Ball Retention', 'Progression', 'Tackle Accuracy', 'Defensive Output', 'Defending High']
+            metric_names = ['Heading','Carrying', 'Ball Retention', 'Progressive\nPassing', 'Tackle\nAccuracy', 'Defensive Output', 'Defending\nHigh']
+            unavail_metrics = "Defending High"
             if compare == 'Yes':
                 Heading2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Heading']
-                Carrying2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'SPt']
+                Carrying2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Carrying']
                 BallRetention2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Ball Retention']
                 ProgressivePassing2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Progression']
                 DefAccuracy2 = df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Tackle Accuracy']
@@ -418,7 +420,7 @@ if mode == 'Player Overview':
                 
             Creating = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Chance Creation']) 
             Carrying = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Carrying'])
-            Technical = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Ball Retention'])
+            Technical = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Verticality'])
             BoxThreat = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Progression'])
             DefAccuracy = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Tackle Accuracy'])
             DefEngage = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Defensive Output'])
@@ -428,14 +430,14 @@ if mode == 'Player Overview':
 
             data1 = [BoxThreat, Creating, Technical, DefAccuracy, DefEngage, DefendingHigh, Heading]
             #if league1 in ws_leagues: data1 = [BoxThreat, Creating, Technical, DefAccuracy, DefEngage, 0, Heading]
-            metrics = ['Progression', 'Chance Creation', 'Ball Retention', 'Tackle Accuracy', 'Defensive Output', 'Pressing','Heading']
-            metric_names = ['Progression', 'Chance Creation', 'Ball Retention', 'Tackle\nAccuracy', 'Defensive Output', 'Defending High','Heading']
+            metrics = ['Progression', 'Chance Creation', 'Verticality', 'Tackle Accuracy', 'Defensive Output', 'Pressing','Heading']
+            metric_names = ['Progression', 'Chance Creation', 'Verticality', 'Tackle\nAccuracy', 'Defensive Output', 'Defending High','Heading']
             unavail_metrics = "Defending High"
 
             if compare == 'Yes':
                 Creating2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Chance Creation']) 
                 Carrying2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Carrying'])
-                Technical2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Ball Retention'])
+                Technical2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Verticality'])
                 BoxThreat2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Progression'])
                 DefAccuracy2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Tackle Accuracy'])
                 DefEngage2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Defensive Output'])
@@ -509,13 +511,13 @@ if mode == 'Player Overview':
             Pressures = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'pctShots'])
             CounterPressures = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctxG'])
             AttThirdPressures = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'pctxG/Shot'])
-            AerialWins = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctpAdj Received Passes in Six Yard Box'])
+            AerialWins = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctAerial %'])
 
             data1 = [TacklesWon, TacklePct, Interceptions, Pressures, CounterPressures, AttThirdPressures,AerialWins]
             #if league1 in ws_leagues: data1 = [0, TacklePct, Interceptions, Pressures, CounterPressures, AttThirdPressures,0]
-            metrics = ['Final Third Touches', 'Box Touches', 'Goals', 'Shots', 'xG', 'xG/Shot', 'Big Chances']
-            metric_names = ['Final Third\nTouches', 'Box Touches', 'Goals', 'Shots', 'xG', 'xG/Shot', 'Touches in\n6-yd Box']
-            unavail_metrics = "Final Third and 6-yd Box Touches"
+            metrics = ['Final Third Touches', 'Box Touches', 'Goals', 'Shots', 'xG', 'xG/Shot', 'Aerial %']
+            metric_names = ['Final Third\nTouches', 'Box Touches', 'Goals', 'Shots', 'xG', 'xG/Shot', 'Aerial %']
+            unavail_metrics = "Final Third Touches"
 
             if compare == 'Yes':
 
@@ -525,7 +527,7 @@ if mode == 'Player Overview':
                 Pressures2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'pctShots'])
                 CounterPressures2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctxG'])
                 AttThirdPressures2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'pctxG/Shot'])
-                AerialWins2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctpAdj Received Passes in Six Yard Box'])
+                AerialWins2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctAerial %'])
 
                 data2 = [TacklesWon2, TacklePct2, Interceptions2, Pressures2, CounterPressures2, AttThirdPressures2,AerialWins2]
                 #if league2 in ws_leagues: data2 = [0, TacklePct2, Interceptions2, Pressures2, CounterPressures2, AttThirdPressures2,0]
@@ -541,18 +543,15 @@ if mode == 'Player Overview':
             Dribbling = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Dribbling'])
             DefOutput = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Defensive Output'])
             Progression = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Progression'])
-            Heading = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Heading'])
+            Heading = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Deep Running'])
 
-            if league1 in ws_leagues: 
-                pc1 = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctProgressive Carries'])
-                pc2 = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctPasses into Box'])
-                pc3 = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctProgressive Passes'])
-                Progression = (0.4 * pc1) + (0.2 * pc2) + (0.4 * pc3)
+            
 
 
             data1 = [Creating, Dribbling, Poaching, Finishing, Heading, DefOutput, Progression]
-            metrics = ['Chance Creation', 'Dribbling Threat', 'Poaching', 'Finishing', 'Heading','Defensive Output','Progression']
-            metric_names = ['Chance\nCreation', 'Dribbling Threat', 'Poaching', 'Finishing', 'Heading', 'Defensive Output', 'Progression']
+            metrics = ['Chance Creation', 'Dribbling Threat', 'Poaching', 'Finishing', 'Deep Running','Defensive Output','Progression']
+            metric_names = ['Chance\nCreation', 'Dribbling Threat', 'Poaching', 'Finishing', 'Deep Running', 'Defensive Output', 'Progression']
+            unavail_metrics = "Deep Running"
 
             if compare == 'Yes':
 
@@ -563,13 +562,8 @@ if mode == 'Player Overview':
                 Dribbling2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Dribbling'])
                 DefOutput2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Defensive Output'])
                 Progression2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Progression'])
-                Heading2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Heading'])
+                Heading2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Deep Running'])
                 
-                if league2 in ws_leagues: 
-                    pc12 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctProgressive Carries'])
-                    pc22 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctPasses into Box'])
-                    pc32 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctProgressive Passes'])
-                    Progression2 = (0.4 * pc12) + (0.2 * pc22) + (0.4 * pc32)
                 data2 = [Creating2, Dribbling2, Poaching2, Finishing2, Heading2, DefOutput2, Progression2]
 
 
@@ -604,14 +598,14 @@ if mode == 'Player Overview':
             Interceptions = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctShots'])
             Pressures = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'pctxG'])
             CounterPressures = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctxG/Shot'])
-            AttThirdPressures = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'pctpAdj Received Passes in Six Yard Box'])
+            AttThirdPressures = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0], 'Aerial %'])
             AerialWins = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'pctpAdj Received Through Passes'])
 
             data1 = [TacklesWon, TacklePct, Interceptions, Pressures, CounterPressures, AttThirdPressures,AerialWins]
             #if league1 in ws_leagues: data1 = [TacklesWon, TacklePct, Interceptions, Pressures, CounterPressures, 0,0]
-            metrics = ['Touches in Box', 'Goals', 'Shots', 'xG', 'xG/Shot', 'Big Chances', 'Big Chance Conversion']
-            metric_names = ['Touches in Box', 'Goals', 'Shots', 'xG', 'xG/Shot', 'Touches in 6-yd Box', 'Through Balls\nReceived']
-            unavail_metrics = "6-yd Box Touches and Through Ball"
+            metrics = ['Touches in Box', 'Goals', 'Shots', 'xG', 'xG/Shot', 'Aerial %', 'Through Ball Receptions']
+            metric_names = ['Touches in Box', 'Goals', 'Shots', 'xG', 'xG/Shot', 'Aerial %', 'Through Balls\nReceived']
+            unavail_metrics = "Through Balls Received"
 
             if compare == 'Yes':
                 TacklesWon2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctBox Receptions']) 
@@ -619,7 +613,7 @@ if mode == 'Player Overview':
                 Interceptions2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctShots'])
                 Pressures2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'pctxG'])
                 CounterPressures2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctxG/Shot'])
-                AttThirdPressures2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'pctpAdj Received Passes in Six Yard Box'])
+                AttThirdPressures2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0], 'Aerial %'])
                 AerialWins2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'pctpAdj Received Through Passes'])
 
                 
@@ -664,12 +658,12 @@ if mode == 'Player Overview':
             Finishing = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Finishing'])
             Technical = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Ball Retention'])
             Dribbling = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Dribbling'])
-            DefOutput = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'SPt'])
+            DefOutput = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Defensive Output'])
             Heading = (df.loc[df.index[(df['Player'] == name1) & (df['Competition'] == league1) & (df['Season'] == season1)][0],'Heading'])
 
             data1 = [Creating, Dribbling, Poaching, Finishing, Heading, DefOutput, Technical]
             metrics = ['Chance Creation', 'Dribbling Threat', 'Poaching', 'Finishing', 'Heading','Defensive Output','Ball Retention']
-            metric_names = ['Chance\nCreation', 'Dribbling Threat', 'Poaching', 'Finishing', 'Heading', 'SPt', 'Ball\nRetention']
+            metric_names = ['Chance\nCreation', 'Dribbling Threat', 'Poaching', 'Finishing', 'Heading', 'Defensive Output', 'Ball\nRetention']
 
             if compare == 'Yes':
                 Creating2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Chance Creation'])
@@ -677,7 +671,7 @@ if mode == 'Player Overview':
                 Finishing2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Finishing'])
                 Technical2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Ball Retention'])
                 Dribbling2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Dribbling'])
-                DefOutput2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'SPt'])
+                DefOutput2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Defensive\n Output'])
                 Heading2 = (df.loc[df.index[(df['Player'] == name2) & (df['Competition'] == league2) & (df['Season'] == season2)][0],'Heading'])
 
                 data2 = [Creating2, Dribbling2, Poaching2, Finishing2, Heading2, DefOutput2, Technical2]
@@ -864,7 +858,7 @@ if mode == 'Player Overview':
         #st.pyplot(plt)
 
             
-        st.image(buf, use_column_width=True)
+        st.image(buf, use_container_width=True)
 
 
     
@@ -872,6 +866,10 @@ if mode == 'Player Overview':
 
 
 if  mode == 'Multi Player Dot Graph':
+
+
+    file_name = 'App-InternationalMensData.parquet'
+    df = pd.read_parquet(file_name)
     pos_list = ['CBs', 'WBs', 'CMs', 'AMs', 'Ws', 'STs']
     #df['Position Group'] = df['pos_group']
 
@@ -1183,10 +1181,306 @@ if  mode == 'Multi Player Dot Graph':
     #st.pyplot(plt)
 
         
-    st.image(buf, use_column_width=True)
+    st.image(buf, use_container_width=True)
     radar = True
     position_group1 = 'NA'
    
+   
+if mode == 'Player Rankings':
+    import matplotlib.font_manager as font_manager
+    from matplotlib import font_manager, rcParams
+
+    font_manager.fontManager.addfont(regular_font_path)
+    font_manager.fontManager.addfont(bold_font_path)
+    rcParams['font.family'] = 'Montserrat'
+    mode1 = 'Basic'
+
+
+    file_name = 'App-InternationalMensData.parquet'
+    df = pd.read_parquet(file_name)
+
+    df = df[['Player', 'Age','Team', 'Competition','Season', 'Minutes', 'Position Group', 'pos_group', 'Detailed Position', 'Ovr']]
+    
+
+    value_cols = ['Ovr']
+    
+    for col in value_cols:
+        
+        if col == 'Ovr': df[col] = round(df[col],1)
+        
+
+
+
+    #df = df[pd.notna(df['Team']) & (df['Team'] != 0) & (df['Team'] != '0') ]
+    position_group_selection = st.multiselect("Select Position Group(s)", ['CBs', 'WBs', 'CMs', 'AMs', 'Ws', 'STs'], default=['CMs'])
+    df = df[df['Position Group'].isin(position_group_selection)]
+    col1, col2, col3 = st.columns(3)
+
+    with col1: 
+        leagues = st.multiselect("Select Leagues", sorted(df['Competition'].unique()), default=['Denmark'])
+        df = df[df['Competition'].isin(leagues)]
+    
+        age_range = st.slider("Age Range", 15, 40, (24,32))
+        df = df[((df['Age'] >= age_range[0]) & (df['Age'] <= age_range[1])) | (pd.isna(df['Age']))]
+
+        
+            
+
+
+        
+
+
+    with col2: 
+        
+        df = df[~df['Season'].str.contains('-', na=False)]
+        seasons = st.multiselect("Select Seasons", sorted(df['Season'].unique()), default = '25/26')
+        df = df[df['Season'].isin(seasons)] 
+
+        def concat_unique(series):
+            return ', '.join(series.astype(str).unique())
+
+        def concat_season(series):
+            unique_series = series.astype(str).unique()
+            if len(unique_series) > 1:
+                return f"{unique_series[0]} - {unique_series[-1]}"
+            else:
+                return unique_series[0]
+
+
+        def concat_not_unique(series):
+            return ', '.join(series.astype(str))
+        nn_cols_list = ['Player', 'Age','Team', 'Competition','Season', 'Minutes', 'Position Group', 'pos_group', 'Detailed Position']
+
+        for col in df.columns:
+            if col not in nn_cols_list: df[col] = df[col] * df['Minutes']
+
+            
+        aggregations = {col: 'sum' for col in df.columns if col not in nn_cols_list}
+        # aggregations['Competition'] = concat_unique
+        aggregations['Minutes'] = 'sum'
+        aggregations['Age'] = 'max'
+        aggregations['Team'] = concat_unique
+        # aggregations['Competition Name'] = concat_unique
+        #aggregations['Formation'] = concat_unique
+
+        aggregations['Season'] = concat_season
+
+        #aggregations['Position'] = concat_unique
+
+        aggregations['Minutes'] = 'sum'
+        #aggregations['Player ID'] = 'first'
+
+
+
+        grouped = df.groupby(['Player', 'Competition']).agg(aggregations).reset_index()
+
+
+        # #print(grouped.head())
+
+        for col in grouped.columns:
+            if col not in nn_cols_list:
+                
+                print(col)
+                grouped[col] = (grouped[col] / grouped['Minutes']).astype(int)
+
+        df = grouped.copy(deep=True)
+        df = df.sort_values(by = 'Ovr', ascending = False)
+        df['Age'] = round(df['Age'], 1)
+            
+        
+        minutes_range = st.slider("Minutes Played Range", 0, max(df['Minutes']), (600, max(df['Minutes'])))
+        df = df[(df['Minutes'] >= minutes_range[0]) & (df['Minutes'] <= minutes_range[1])]
+
+
+    with col3: 
+        
+    
+        num_shown = st.segmented_control("# Players to Show", ["10", "15", "25", "All"],default = "15" )
+
+
+
+    
+
+        
+        
+    
+
+    df.insert(0, "Rank", range(1, len(df) + 1))
+
+    df['Team'] = df['Team']
+    df['League'] = df['Competition']
+    df['Mins'] = df['Minutes']
+
+    data_copy = df.copy(deep=True)
+
+
+            
+            
+            
+        
+    
+
+    
+
+    
+
+    if num_shown == "5": df = df.head(5)
+    elif num_shown == "10": df = df.head(10)
+    elif num_shown == "15": df = df.head(15)
+    elif num_shown == "25": df = df.head(25)
+    elif num_shown == "All": df = df.copy(deep=True)
+    
+    #st.write(df)
+
+    
+    columns = ["Rank","Player", "Team", "League", "Age","Mins",  "Ovr"]
+    
+    
+
+    def create_football_table(data, columns):
+        # ---- Figure & layout (fixes: subtitle whitespace) ----
+        fig, ax = plt.subplots(figsize=(14, 12))
+        # We'll control margins explicitly; avoid tight_layout which can add unpredictable gaps with tables.
+        fig.set_constrained_layout(False)
+        fig.subplots_adjust(left=0.02, right=0.98, bottom=0.06, top=0.90)
+
+        # Titles sit in the top figure margin; table lives entirely inside the axes.
+        title = f"Top {', '.join(map(str, set(position_group_selection)))} - Data Ranking"
+
+
+        subtitle = f"{', '.join(map(str, set(leagues)))} | {', '.join(map(str, set(seasons)))} | Age: {age_range[0]}-{age_range[1]} | Minutes: {minutes_range[0]}-{minutes_range[1]}"
+
+
+        fig.suptitle(title, fontsize=24, fontweight='bold', y=0.965)
+        fig.text(0.5, 0.92, subtitle, ha='center', va='center', fontsize=14, color='black')
+
+        ax.axis('off')
+
+        data_df = pd.DataFrame(data, columns=columns)
+
+        # ---- Table ----
+        table = ax.table(
+            cellText=data_df.values,
+            colLabels=data_df.columns,
+            cellLoc='center',
+            loc='center',
+            bbox=[0.00, 0.00, 1.00, 1.00]  # Fill the axes; margins come from subplots_adjust above
+        )
+
+        # Basic styling
+        table.auto_set_font_size(False)
+        table.set_fontsize(14)
+        table.scale(1, 2)
+
+        # Remove borders
+        for _, cell in table.get_celld().items():
+            cell.set_linewidth(0)
+            cell.set_edgecolor('none')
+
+
+        
+
+        # Header styling
+        ncols = len(data_df.columns)
+        for j in range(ncols):
+            cell = table[(0, j)]
+            cell.set_facecolor('#E8E8E8')
+            cell.set_text_props(weight='bold', color='black')
+            cell.set_height(0.08)
+
+        # Data rows
+        nrows = len(data_df)
+        for i in range(1, nrows + 1):
+            for j in range(ncols):
+                c = table[(i, j)]
+                c.set_facecolor('white')
+                if j == ncols - 1:
+                    c.set_facecolor('#E6E1F0')  # last column
+                if j == 1:
+                    c.set_text_props(ha='left')
+                    #c.get_text().set_x(0.15)  # space for logo
+
+                    # if nrows < 4:
+                    #     table[(i, 1)].PAD = 0.45
+                    # elif nrows < 8:
+                    #     table[(i, 1)].PAD = 0.35
+                    # elif nrows < 12:
+                    #     table[(i, 1)].PAD = 0.3
+                    # else: table[(i, 1)].PAD = 0.25
+
+                c.set_height(0.06)
+                c.set_text_props(color='black')
+
+       
+        col_widths = {
+            "Rank": 0.1,
+            "Player": 0.35,
+            "Team": 0.3,
+            "League": 0.15,
+           
+            "Mins": 0.10,
+            "Age": 0.10,
+            "Ovr": 0.12
+        }
+        
+        # Apply widths to all cells in that column
+        for j, col in enumerate(data_df.columns):
+            for i in range(nrows + 1):  # +1 to include header row
+                cell = table[(i, j)]
+                cell.set_width(col_widths.get(col, 0.1))
+
+        # Force draw to get real positions
+        fig.canvas.draw()
+        renderer = fig.canvas.get_renderer()
+
+       
+        # ---- Row separators (fixes: incorrect placement/omissions) ----
+        # Draw a thin line under every data row except the last, using each row's true bottom y.
+        # We'll align lines to the full table width (from first to last column).
+        first_left_disp = table[(1, 0)].get_window_extent(renderer).x0
+        last_right_disp = table[(1, ncols - 1)].get_window_extent(renderer).x1
+        left_fig = fig.transFigure.inverted().transform((first_left_disp, 0))[0]
+        right_fig = fig.transFigure.inverted().transform((last_right_disp, 0))[0]
+
+        for i in range(1, nrows):  # separators between data rows
+            row_bottom_fig_y = table[(i, 0)].get_window_extent(renderer)
+            row_bottom_fig_y = row_bottom_fig_y.transformed(fig.transFigure.inverted()).y0
+            line = plt.Line2D([left_fig, right_fig],
+                            [row_bottom_fig_y, row_bottom_fig_y],
+                            color='#DDDDDD', linewidth=0.9, alpha=0.9,
+                            transform=fig.transFigure, zorder=2)
+            fig.add_artist(line)
+
+        # ---- Footer ----
+        # ax.text(0.98, 0.01, "Test", transform=ax.transAxes,
+        #         ha='right', va='bottom', fontsize=10, color='gray')
+
+        return fig, ax, table
+
+
+    
+
+    # Create the table
+    fig, ax, table = create_football_table(df, columns)
+    #plt.show()
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', bbox_inches='tight', pad_inches=0.2)
+    #fig.savefig("PIctestjuly3", format='png', bbox_inches='tight', pad_inches=0)
+
+    buf.seek(0)
+        
+    st.image(buf, use_container_width=True)
+    
+    
+    
+   
+    selected_cols =  ["Rank","Player", "Team", "Competition", "Minutes", "Age", "Ovr"]
+    data_copy = data_copy[selected_cols]
+   # st.write(data_copy, ind)
+    st.write("")
+    st.write("")
+    st.dataframe(data_copy, hide_index=True)
+
 
 
 def get_columns_to_compare(row):
@@ -1195,7 +1489,7 @@ def get_columns_to_compare(row):
         if pd.notna(row['Defending High']):
             columns.append('Defending High')
     elif row['Position Group'] == 'WBs':
-        columns = ['Tackle Accuracy', 'Defensive Output', 'Ball Retention', 'Crossing', 'Chance Creation', 'Progression', 'Receiving Forward', 'Heading', 'Carrying']
+        columns = ['Tackle Accuracy', 'Defensive Output', 'Ball Retention', 'Chance Creation', 'Progression', 'Receiving Forward', 'Heading', 'Carrying']
         if pd.notna(row['Defending High']):
             columns.extend(['Defending High'])
     elif row['Position Group'] == 'CMs':
@@ -1326,57 +1620,58 @@ if mode == 'Player Overview':
 
         
 
+if mode == 'Player Overview':
 
 
-if position_group1 == 'CBs' and mode1 == 'Basic':
-    st.write("Metric Definitions:")
-    st.write("Progression: How often and how accurate the player is at making progressive, long, and final third entry passes")
-    st.write("Ball Retention: A measure of how good they are at keeping the ball and not turning it over (passing and dribbling accuracies)")
-    st.write("Carrying: Threat added from ball carries")
-    st.write("Heading: How often the player wins aerial duels and how accurate they are in them")
-    st.write("Defending High: How often the player makes defensive actions in the attacking half [Only available for leagues with StatsBomb data]")
-    st.write("Defensive Output: How often the player makes tackles, interceptions, blocks")
-    st.write("Tackle Accuracy: Ratio of tackles won per attacker faced")
+    if position_group1 == 'CBs' and mode1 == 'Basic':
+        st.write("Metric Definitions:")
+        st.write("Progression: How often and how accurate the player is at making progressive, long, and final third entry passes")
+        st.write("Ball Retention: A measure of how good they are at keeping the ball and not turning it over (passing and dribbling accuracies)")
+        st.write("Carrying: Threat added from ball carries")
+        st.write("Heading: How often the player wins aerial duels and how accurate they are in them")
+        st.write("Defending High: How often the player makes defensive actions in the attacking half [Only available for leagues with StatsBomb data]")
+        st.write("Defensive Output: How often the player makes tackles, interceptions, blocks")
+        st.write("Tackle Accuracy: Ratio of tackles won per attacker faced")
 
-if position_group1 == 'WBs' and mode1 == 'Basic':
-    st.write("Metric Definitions:")
-    st.write("Chance Creation: Assists, xA, Key Passes, Passes & Crosses Completed into Box")
-    st.write("Ball Retention: A measure of how good they are at keeping the ball and not turning it over (passing and dribbling accuracies)")
-    st.write("Receiving: How often the player receives the ball in advanced positions")
-    st.write("Heading: How often the player wins aerial duels and how accurate they are in them")
-    st.write("Defending High: How often the player makes defensive actions in the attacking half [Only available for leagues with StatsBomb data]")
-    st.write("Defensive Output: How often the player makes tackles, interceptions, blocks")
-    st.write("Tackle Accuracy: Ratio of tackles won per attacker faced")
+    if position_group1 == 'WBs' and mode1 == 'Basic':
+        st.write("Metric Definitions:")
+        st.write("Chance Creation: Assists, xA, Key Passes, Passes & Crosses Completed into Box")
+        st.write("Ball Retention: A measure of how good they are at keeping the ball and not turning it over (passing and dribbling accuracies)")
+        st.write("Receiving: How often the player receives the ball in advanced positions")
+        st.write("Heading: How often the player wins aerial duels and how accurate they are in them")
+        st.write("Defending High: How often the player makes defensive actions in the attacking half [Only available for leagues with StatsBomb data]")
+        st.write("Defensive Output: How often the player makes tackles, interceptions, blocks")
+        st.write("Tackle Accuracy: Ratio of tackles won per attacker faced")
 
-if position_group1 == 'CMs' and mode1 == 'Basic':
-    st.write("Metric Definitions:")
-    st.write("Ball Retention: A measure of how good they are at keeping the ball and not turning it over (passing and dribbling accuracies)")
-    st.write("Chance Creation: Assists, xA, Key Passes, Passes & Crosses Completed into Box")
-    st.write("Receiving: How often the player receives the ball in advanced positions")
-    st.write("Heading: How often the player wins aerial duels and how accurate they are in them")
-    #st.write("Pressing: How often the player makes pressure & counterpressure actions, with an emphasis on attacking third pressures [Only available for leagues with StatsBomb data]")
-    st.write("Defensive Output: How often the player makes tackles, interceptions, blocks")
-    st.write("Tackle Accuracy: Ratio of tackles won per attacker faced")
+    if position_group1 == 'CMs' and mode1 == 'Basic':
+        st.write("Metric Definitions:")
+        st.write("Ball Retention: A measure of how good they are at keeping the ball and not turning it over (passing and dribbling accuracies)")
+        st.write("Chance Creation: Assists, xA, Key Passes, Passes & Crosses Completed into Box")
+        st.write("Receiving: How often the player receives the ball in advanced positions")
+        st.write("Heading: How often the player wins aerial duels and how accurate they are in them")
+        #st.write("Pressing: How often the player makes pressure & counterpressure actions, with an emphasis on attacking third pressures [Only available for leagues with StatsBomb data]")
+        st.write("Defensive Output: How often the player makes tackles, interceptions, blocks")
+        st.write("Tackle Accuracy: Ratio of tackles won per attacker faced")
 
-if (position_group1 == 'AMs' or position_group1 == 'Ws') and mode1 == 'Basic':
-    st.write("Metric Definitions:")
-    st.write("Finishing: Goal Conversion %, xG Over/Underperformance")
-    st.write("Poaching: How often the player gets into goalscoring positons (xG, xG/Shot, Touches in Box)")
-    st.write("Dribbling Threat: 1v1 Dribbles, Progressive Carries")
-    st.write("Chance Creation: Assists, xA, Key Passes, Passes & Crosses Completed into Box")
-    st.write("Progression: Player's involvement in moving the ball forward in the buildup via final third and box entry passes, dribbles")
-    st.write("Defensive Output: How often the player makes pressures, counterpressures, tackles, interceptions")
-    st.write("Heading: How often the player wins aerial duels and how accurate they are in them")
+    if (position_group1 == 'AMs' or position_group1 == 'Ws') and mode1 == 'Basic':
+        st.write("Metric Definitions:")
+        st.write("Finishing: Goal Conversion %, xG Over/Underperformance")
+        st.write("Poaching: How often the player gets into goalscoring positons (xG, xG/Shot, Touches in Box)")
+        st.write("Dribbling Threat: 1v1 Dribbles, Progressive Carries")
+        st.write("Chance Creation: Assists, xA, Key Passes, Passes & Crosses Completed into Box")
+        st.write("Progression: Player's involvement in moving the ball forward in the buildup via final third and box entry passes, dribbles")
+        st.write("Defensive Output: How often the player makes pressures, counterpressures, tackles, interceptions")
+        st.write("Heading: How often the player wins aerial duels and how accurate they are in them")
 
-if position_group1 == 'STs' and mode1 == 'Basic':
-    st.write("Metric Definitions:")
-    st.write("Finishing: Goal Conversion %, xG Over/Underperformance")
-    st.write("Poaching: How often the player gets into goalscoring positons (xG, xG/Shot, Touches in Box)")
-    st.write("Dribbling Threat: 1v1 Dribbles, Progressive Carries")
-    st.write("Chance Creation: Assists, xA, Key Passes, Passes & Crosses Completed into Box")
-    st.write("Ball Retention: A measure of how good they are at keeping the ball and not turning it over (passing and dribbling accuracies)")
-    st.write("Defensive Output: How often the player makes pressures, counterpressures, tackles, interceptions")
-    st.write("Heading: How often the player wins aerial duels and how accurate they are in them")
-     
+    if position_group1 == 'STs' and mode1 == 'Basic':
+        st.write("Metric Definitions:")
+        st.write("Finishing: Goal Conversion %, xG Over/Underperformance")
+        st.write("Poaching: How often the player gets into goalscoring positons (xG, xG/Shot, Touches in Box)")
+        st.write("Dribbling Threat: 1v1 Dribbles, Progressive Carries")
+        st.write("Chance Creation: Assists, xA, Key Passes, Passes & Crosses Completed into Box")
+        st.write("Ball Retention: A measure of how good they are at keeping the ball and not turning it over (passing and dribbling accuracies)")
+        st.write("Defensive Output: How often the player makes pressures, counterpressures, tackles, interceptions")
+        st.write("Heading: How often the player wins aerial duels and how accurate they are in them")
+        
 
 #streamlit run streamlit.py
