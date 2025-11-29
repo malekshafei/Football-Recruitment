@@ -1225,12 +1225,15 @@ if mode == 'Player Rankings':
 
     with col1: 
         leagues = st.multiselect("Select Leagues", sorted(df['Competition'].unique()), default=['Denmark'])
-        df = df[df['Competition'].isin(leagues)]
-    
-        age_range = st.slider("Age Range", 15, 40, (15,32))
-        df = df[((df['Age'] >= age_range[0]) & (df['Age'] <= age_range[1])) | (pd.isna(df['Age']))]
+        if leagues == []: st.warning("Please select a League")
+        else: 
+            df = df[df['Competition'].isin(leagues)]
 
         
+            age_range = st.slider("Age Range", 15, 40, (15,32))
+            df = df[((df['Age'] >= age_range[0]) & (df['Age'] <= age_range[1])) | (pd.isna(df['Age']))]
+
+    
             
 
 
@@ -1240,63 +1243,66 @@ if mode == 'Player Rankings':
     with col2: 
         
         df = df[~df['Season'].str.contains('-', na=False)]
-        seasons = st.multiselect("Select Seasons", sorted(df['Season'].unique()), default = '25/26')
-        df = df[df['Season'].isin(seasons)] 
+        seasons = st.multiselect("Select Seasons", sorted(df['Season'].unique()), default = df['Season'].max())
+        if seasons == []: st.warning("Please select a season")
+        else: 
+            if leagues != []:
+                df = df[df['Season'].isin(seasons)] 
 
-        def concat_unique(series):
-            return ', '.join(series.astype(str).unique())
+                def concat_unique(series):
+                    return ', '.join(series.astype(str).unique())
 
-        def concat_season(series):
-            unique_series = series.astype(str).unique()
-            if len(unique_series) > 1:
-                return f"{unique_series[0]} - {unique_series[-1]}"
-            else:
-                return unique_series[0]
-
-
-        def concat_not_unique(series):
-            return ', '.join(series.astype(str))
-        nn_cols_list = ['Player', 'Age','Team', 'Competition','Season', 'Minutes', 'Position Group', 'pos_group', 'Detailed Position']
-
-        for col in df.columns:
-            if col not in nn_cols_list: df[col] = df[col] * df['Minutes']
-
-            
-        aggregations = {col: 'sum' for col in df.columns if col not in nn_cols_list}
-        # aggregations['Competition'] = concat_unique
-        aggregations['Minutes'] = 'sum'
-        aggregations['Age'] = 'max'
-        aggregations['Team'] = concat_unique
-        # aggregations['Competition Name'] = concat_unique
-        #aggregations['Formation'] = concat_unique
-
-        aggregations['Season'] = concat_season
-
-        #aggregations['Position'] = concat_unique
-        aggregations['Detailed Position'] = 'last'
-        aggregations['Minutes'] = 'sum'
-        #aggregations['Player ID'] = 'first'
+                def concat_season(series):
+                    unique_series = series.astype(str).unique()
+                    if len(unique_series) > 1:
+                        return f"{unique_series[0]} - {unique_series[-1]}"
+                    else:
+                        return unique_series[0]
 
 
+                def concat_not_unique(series):
+                    return ', '.join(series.astype(str))
+                nn_cols_list = ['Player', 'Age','Team', 'Competition','Season', 'Minutes', 'Position Group', 'pos_group', 'Detailed Position']
 
-        grouped = df.groupby(['Player', 'Competition']).agg(aggregations).reset_index()
+                for col in df.columns:
+                    if col not in nn_cols_list: df[col] = df[col] * df['Minutes']
+
+                    
+                aggregations = {col: 'sum' for col in df.columns if col not in nn_cols_list}
+                # aggregations['Competition'] = concat_unique
+                aggregations['Minutes'] = 'sum'
+                aggregations['Age'] = 'max'
+                aggregations['Team'] = concat_unique
+                # aggregations['Competition Name'] = concat_unique
+                #aggregations['Formation'] = concat_unique
+
+                aggregations['Season'] = concat_season
+
+                #aggregations['Position'] = concat_unique
+                aggregations['Detailed Position'] = 'last'
+                aggregations['Minutes'] = 'sum'
+                #aggregations['Player ID'] = 'first'
 
 
-        # #print(grouped.head())
 
-        for col in grouped.columns:
-            if col not in nn_cols_list:
+                grouped = df.groupby(['Player', 'Competition']).agg(aggregations).reset_index()
+
+
+                # #print(grouped.head())
+
+                for col in grouped.columns:
+                    if col not in nn_cols_list:
+                        
+                        print(col)
+                        grouped[col] = (grouped[col] / grouped['Minutes']).astype(int)
+
+                df = grouped.copy(deep=True)
+                df = df.sort_values(by = 'Ovr', ascending = False)
+                df['Age'] = round(df['Age'], 1)
+                    
                 
-                print(col)
-                grouped[col] = (grouped[col] / grouped['Minutes']).astype(int)
-
-        df = grouped.copy(deep=True)
-        df = df.sort_values(by = 'Ovr', ascending = False)
-        df['Age'] = round(df['Age'], 1)
-            
-        
-        minutes_range = st.slider("Minutes Played Range", 0, max(df['Minutes']), (600, max(df['Minutes'])))
-        df = df[(df['Minutes'] >= minutes_range[0]) & (df['Minutes'] <= minutes_range[1])]
+                minutes_range = st.slider("Minutes Played Range", 0, max(df['Minutes']), (600, max(df['Minutes'])))
+                df = df[(df['Minutes'] >= minutes_range[0]) & (df['Minutes'] <= minutes_range[1])]
 
 
     with col3: 
@@ -1311,185 +1317,185 @@ if mode == 'Player Rankings':
         
         
     
+    if leagues != [] and seasons != []:
+        df.insert(0, "Rank", range(1, len(df) + 1))
 
-    df.insert(0, "Rank", range(1, len(df) + 1))
-
-    df['Team'] = df['Team']
-    df['League'] = df['Competition']
-    df['Mins'] = df['Minutes']
-    df['Position'] = df['Detailed Position'].str.split(',').str[:2].str.join(', ')
-
-
-    data_copy = df.copy(deep=True)
+        df['Team'] = df['Team']
+        df['League'] = df['Competition']
+        df['Mins'] = df['Minutes']
+        df['Position'] = df['Detailed Position'].str.split(',').str[:2].str.join(', ')
 
 
-            
-            
+        data_copy = df.copy(deep=True)
+
+
+                
+                
+                
             
         
-    
-
-    
-
-    
-
-    if num_shown == "5": df = df.head(5)
-    elif num_shown == "10": df = df.head(10)
-    elif num_shown == "15": df = df.head(15)
-    elif num_shown == "25": df = df.head(25)
-    elif num_shown == "All": df = df.copy(deep=True)
-    
-    #st.write(df)
-
-    
-    columns = ["Rank","Player", "Team", "League", "Position", "Age","Mins",  "Ovr"]
-    
-    
-
-    def create_football_table(data, columns):
-        # ---- Figure & layout (fixes: subtitle whitespace) ----
-        fig, ax = plt.subplots(figsize=(14, 12))
-        # We'll control margins explicitly; avoid tight_layout which can add unpredictable gaps with tables.
-        fig.set_constrained_layout(False)
-        fig.subplots_adjust(left=0.02, right=0.98, bottom=0.06, top=0.90)
-
-        # Titles sit in the top figure margin; table lives entirely inside the axes.
-        title = f"Top {', '.join(map(str, set(position_group_selection)))} - Data Ranking"
-
-
-        subtitle = f"{', '.join(map(str, set(leagues)))} | {', '.join(map(str, set(seasons)))} | Age: {age_range[0]}-{age_range[1]} | Minutes: {minutes_range[0]}-{minutes_range[1]}"
-
-
-        fig.suptitle(title, fontsize=24, fontweight='bold', y=0.965)
-        fig.text(0.5, 0.92, subtitle, ha='center', va='center', fontsize=14, color='black')
-
-        ax.axis('off')
-
-        data_df = pd.DataFrame(data, columns=columns)
-
-        # ---- Table ----
-        table = ax.table(
-            cellText=data_df.values,
-            colLabels=data_df.columns,
-            cellLoc='center',
-            loc='center',
-            bbox=[0.00, 0.00, 1.00, 1.00]  # Fill the axes; margins come from subplots_adjust above
-        )
-
-        # Basic styling
-        table.auto_set_font_size(False)
-        table.set_fontsize(14)
-        table.scale(1, 2)
-
-        # Remove borders
-        for _, cell in table.get_celld().items():
-            cell.set_linewidth(0)
-            cell.set_edgecolor('none')
-
 
         
 
-        # Header styling
-        ncols = len(data_df.columns)
-        for j in range(ncols):
-            cell = table[(0, j)]
-            cell.set_facecolor('#E8E8E8')
-            cell.set_text_props(weight='bold', color='black')
-            cell.set_height(0.08)
+        
 
-        # Data rows
-        nrows = len(data_df)
-        for i in range(1, nrows + 1):
+        if num_shown == "5": df = df.head(5)
+        elif num_shown == "10": df = df.head(10)
+        elif num_shown == "15": df = df.head(15)
+        elif num_shown == "25": df = df.head(25)
+        elif num_shown == "All": df = df.copy(deep=True)
+        
+        #st.write(df)
+
+        
+        columns = ["Rank","Player", "Team", "League", "Position", "Age","Mins",  "Ovr"]
+        
+        
+
+        def create_football_table(data, columns):
+            # ---- Figure & layout (fixes: subtitle whitespace) ----
+            fig, ax = plt.subplots(figsize=(14, 12))
+            # We'll control margins explicitly; avoid tight_layout which can add unpredictable gaps with tables.
+            fig.set_constrained_layout(False)
+            fig.subplots_adjust(left=0.02, right=0.98, bottom=0.06, top=0.90)
+
+            # Titles sit in the top figure margin; table lives entirely inside the axes.
+            title = f"Top {', '.join(map(str, set(position_group_selection)))} - Data Ranking"
+
+
+            subtitle = f"{', '.join(map(str, set(leagues)))} | {', '.join(map(str, set(seasons)))} | Age: {age_range[0]}-{age_range[1]} | Minutes: {minutes_range[0]}-{minutes_range[1]}"
+
+
+            fig.suptitle(title, fontsize=24, fontweight='bold', y=0.965)
+            fig.text(0.5, 0.92, subtitle, ha='center', va='center', fontsize=14, color='black')
+
+            ax.axis('off')
+
+            data_df = pd.DataFrame(data, columns=columns)
+
+            # ---- Table ----
+            table = ax.table(
+                cellText=data_df.values,
+                colLabels=data_df.columns,
+                cellLoc='center',
+                loc='center',
+                bbox=[0.00, 0.00, 1.00, 1.00]  # Fill the axes; margins come from subplots_adjust above
+            )
+
+            # Basic styling
+            table.auto_set_font_size(False)
+            table.set_fontsize(14)
+            table.scale(1, 2)
+
+            # Remove borders
+            for _, cell in table.get_celld().items():
+                cell.set_linewidth(0)
+                cell.set_edgecolor('none')
+
+
+            
+
+            # Header styling
+            ncols = len(data_df.columns)
             for j in range(ncols):
-                c = table[(i, j)]
-                c.set_facecolor('white')
-                if j == ncols - 1:
-                    c.set_facecolor('#E6E1F0')  # last column
-                if j == 1:
-                    c.set_text_props(ha='left')
-                    #c.get_text().set_x(0.15)  # space for logo
+                cell = table[(0, j)]
+                cell.set_facecolor('#E8E8E8')
+                cell.set_text_props(weight='bold', color='black')
+                cell.set_height(0.08)
 
-                    # if nrows < 4:
-                    #     table[(i, 1)].PAD = 0.45
-                    # elif nrows < 8:
-                    #     table[(i, 1)].PAD = 0.35
-                    # elif nrows < 12:
-                    #     table[(i, 1)].PAD = 0.3
-                    # else: table[(i, 1)].PAD = 0.25
+            # Data rows
+            nrows = len(data_df)
+            for i in range(1, nrows + 1):
+                for j in range(ncols):
+                    c = table[(i, j)]
+                    c.set_facecolor('white')
+                    if j == ncols - 1:
+                        c.set_facecolor('#E6E1F0')  # last column
+                    if j == 1:
+                        c.set_text_props(ha='left')
+                        #c.get_text().set_x(0.15)  # space for logo
 
-                c.set_height(0.06)
-                c.set_text_props(color='black')
+                        # if nrows < 4:
+                        #     table[(i, 1)].PAD = 0.45
+                        # elif nrows < 8:
+                        #     table[(i, 1)].PAD = 0.35
+                        # elif nrows < 12:
+                        #     table[(i, 1)].PAD = 0.3
+                        # else: table[(i, 1)].PAD = 0.25
 
-       
-        col_widths = {
-            "Rank": 0.1,
-            "Player": 0.35,
-            "Team": 0.2,
-            "League": 0.15,
-            "Position": 0.15,
-           
-            "Mins": 0.10,
-            "Age": 0.10,
-            "Ovr": 0.12
-        }
+                    c.set_height(0.06)
+                    c.set_text_props(color='black')
+
         
-        # Apply widths to all cells in that column
-        for j, col in enumerate(data_df.columns):
-            for i in range(nrows + 1):  # +1 to include header row
-                cell = table[(i, j)]
-                cell.set_width(col_widths.get(col, 0.1))
+            col_widths = {
+                "Rank": 0.1,
+                "Player": 0.35,
+                "Team": 0.2,
+                "League": 0.15,
+                "Position": 0.15,
+            
+                "Mins": 0.10,
+                "Age": 0.10,
+                "Ovr": 0.12
+            }
+            
+            # Apply widths to all cells in that column
+            for j, col in enumerate(data_df.columns):
+                for i in range(nrows + 1):  # +1 to include header row
+                    cell = table[(i, j)]
+                    cell.set_width(col_widths.get(col, 0.1))
 
-        # Force draw to get real positions
-        fig.canvas.draw()
-        renderer = fig.canvas.get_renderer()
+            # Force draw to get real positions
+            fig.canvas.draw()
+            renderer = fig.canvas.get_renderer()
 
-       
-        # ---- Row separators (fixes: incorrect placement/omissions) ----
-        # Draw a thin line under every data row except the last, using each row's true bottom y.
-        # We'll align lines to the full table width (from first to last column).
-        first_left_disp = table[(1, 0)].get_window_extent(renderer).x0
-        last_right_disp = table[(1, ncols - 1)].get_window_extent(renderer).x1
-        left_fig = fig.transFigure.inverted().transform((first_left_disp, 0))[0]
-        right_fig = fig.transFigure.inverted().transform((last_right_disp, 0))[0]
-
-        for i in range(1, nrows):  # separators between data rows
-            row_bottom_fig_y = table[(i, 0)].get_window_extent(renderer)
-            row_bottom_fig_y = row_bottom_fig_y.transformed(fig.transFigure.inverted()).y0
-            line = plt.Line2D([left_fig, right_fig],
-                            [row_bottom_fig_y, row_bottom_fig_y],
-                            color='#DDDDDD', linewidth=0.9, alpha=0.9,
-                            transform=fig.transFigure, zorder=2)
-            fig.add_artist(line)
-
-        # ---- Footer ----
-        # ax.text(0.98, 0.01, "Test", transform=ax.transAxes,
-        #         ha='right', va='bottom', fontsize=10, color='gray')
-
-        return fig, ax, table
-
-
-    
-
-    # Create the table
-    fig, ax, table = create_football_table(df, columns)
-    #plt.show()
-    buf = io.BytesIO()
-    plt.savefig(buf, format='png', bbox_inches='tight', pad_inches=0.2)
-    #fig.savefig("PIctestjuly3", format='png', bbox_inches='tight', pad_inches=0)
-
-    buf.seek(0)
         
-    st.image(buf, use_container_width=True)
+            # ---- Row separators (fixes: incorrect placement/omissions) ----
+            # Draw a thin line under every data row except the last, using each row's true bottom y.
+            # We'll align lines to the full table width (from first to last column).
+            first_left_disp = table[(1, 0)].get_window_extent(renderer).x0
+            last_right_disp = table[(1, ncols - 1)].get_window_extent(renderer).x1
+            left_fig = fig.transFigure.inverted().transform((first_left_disp, 0))[0]
+            right_fig = fig.transFigure.inverted().transform((last_right_disp, 0))[0]
+
+            for i in range(1, nrows):  # separators between data rows
+                row_bottom_fig_y = table[(i, 0)].get_window_extent(renderer)
+                row_bottom_fig_y = row_bottom_fig_y.transformed(fig.transFigure.inverted()).y0
+                line = plt.Line2D([left_fig, right_fig],
+                                [row_bottom_fig_y, row_bottom_fig_y],
+                                color='#DDDDDD', linewidth=0.9, alpha=0.9,
+                                transform=fig.transFigure, zorder=2)
+                fig.add_artist(line)
+
+            # ---- Footer ----
+            # ax.text(0.98, 0.01, "Test", transform=ax.transAxes,
+            #         ha='right', va='bottom', fontsize=10, color='gray')
+
+            return fig, ax, table
+
+
+        
+
+        # Create the table
+        fig, ax, table = create_football_table(df, columns)
+        #plt.show()
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png', bbox_inches='tight', pad_inches=0.2)
+        #fig.savefig("PIctestjuly3", format='png', bbox_inches='tight', pad_inches=0)
+
+        buf.seek(0)
+            
+        st.image(buf, use_container_width=True)
+        
+        
+        
     
-    
-    
-   
-    selected_cols =  ["Rank","Player", "Team", "Competition", "Position","Minutes", "Age", "Ovr"]
-    data_copy = data_copy[selected_cols]
-   # st.write(data_copy, ind)
-    st.write("")
-    st.write("")
-    st.dataframe(data_copy, hide_index=True)
+        selected_cols =  ["Rank","Player", "Team", "Competition", "Position","Minutes", "Age", "Ovr"]
+        data_copy = data_copy[selected_cols]
+    # st.write(data_copy, ind)
+        st.write("")
+        st.write("")
+        st.dataframe(data_copy, hide_index=True)
 
 
 
