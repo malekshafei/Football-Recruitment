@@ -47,6 +47,13 @@ df.fillna(0, inplace=True)
 regular_font_path = 'Montserrat-Regular.ttf'
 bold_font_path = 'Montserrat-Bold.ttf'
 
+import matplotlib.font_manager as font_manager
+from matplotlib import font_manager, rcParams
+
+font_manager.fontManager.addfont(regular_font_path)
+font_manager.fontManager.addfont(bold_font_path)
+rcParams['font.family'] = 'Montserrat'
+
 custom_css = f"""
 <style>
 @font-face {{
@@ -80,7 +87,7 @@ pos_list = ['CBs', 'WBs', 'CMs', 'AMs', 'Ws', 'STs']
 sorted_competitions = sorted(df['Competition'].unique())
 
 
-mode = st.selectbox("Select Mode", options=['Player Overview', 'Multi Player Dot Graph', 'Player Rankings'])
+mode = st.selectbox("Select Mode", options=['Player Overview', 'Player Rankings', 'Multi Player Dot Graph'])
 
 if mode == 'Player Overview':
 
@@ -1199,7 +1206,7 @@ if mode == 'Player Rankings':
     file_name = 'App-InternationalMensData.parquet'
     df = pd.read_parquet(file_name)
 
-    df = df[['Player', 'Age','Team', 'Competition','Season', 'Minutes', 'Position Group', 'pos_group', 'Detailed Position', 'Ovr']]
+    df = df[['Player', 'Age','Team', 'Competition', 'Season', 'Minutes', 'Position Group', 'pos_group', 'Detailed Position', 'Ovr']]
     
 
     value_cols = ['Ovr']
@@ -1266,7 +1273,7 @@ if mode == 'Player Rankings':
         aggregations['Season'] = concat_season
 
         #aggregations['Position'] = concat_unique
-
+        aggregations['Detailed Position'] = 'last'
         aggregations['Minutes'] = 'sum'
         #aggregations['Player ID'] = 'first'
 
@@ -1310,6 +1317,8 @@ if mode == 'Player Rankings':
     df['Team'] = df['Team']
     df['League'] = df['Competition']
     df['Mins'] = df['Minutes']
+    df['Position'] = df['Detailed Position'].str.split(',').str[:2].str.join(', ')
+
 
     data_copy = df.copy(deep=True)
 
@@ -1333,7 +1342,7 @@ if mode == 'Player Rankings':
     #st.write(df)
 
     
-    columns = ["Rank","Player", "Team", "League", "Age","Mins",  "Ovr"]
+    columns = ["Rank","Player", "Team", "League", "Position", "Age","Mins",  "Ovr"]
     
     
 
@@ -1415,8 +1424,9 @@ if mode == 'Player Rankings':
         col_widths = {
             "Rank": 0.1,
             "Player": 0.35,
-            "Team": 0.3,
+            "Team": 0.2,
             "League": 0.15,
+            "Position": 0.15,
            
             "Mins": 0.10,
             "Age": 0.10,
@@ -1474,7 +1484,7 @@ if mode == 'Player Rankings':
     
     
    
-    selected_cols =  ["Rank","Player", "Team", "Competition", "Minutes", "Age", "Ovr"]
+    selected_cols =  ["Rank","Player", "Team", "Competition", "Position","Minutes", "Age", "Ovr"]
     data_copy = data_copy[selected_cols]
    # st.write(data_copy, ind)
     st.write("")
